@@ -1,0 +1,213 @@
+	while (getline(file, line))
+	{
+		int* spaces = search(line, 0, ' ');
+		switch (line[0])
+		{
+		case 'v':
+
+			if (line[1] == 'n')
+			{
+				string snum = line.substr(spaces[0] + 1, spaces[1] - spaces[0] - 1);
+				string snum1 = line.substr(spaces[1] + 1, spaces[2] - spaces[1] - 1);
+				string snum2 = line.substr(spaces[2] + 1, line.size() - spaces[2] - 1);
+				float num = stof(snum);
+				float num1 = stof(snum1);
+				float num2 = stof(snum2);
+				normal[normalinc] = { num, num1, num2 };
+				normalinc++;
+				break;
+			}
+			if (line[1] == ' ')
+			{
+
+				string snum = line.substr(spaces[0] + 1, spaces[1] - spaces[0] - 1);
+				string snum1 = line.substr(spaces[1] + 1, spaces[2] - spaces[1] - 1);
+				string snum2 = line.substr(spaces[2] + 1, line.size() - spaces[2] - 1);
+				float num = stof(snum);
+				float num1 = stof(snum1);
+				float num2 = stof(snum2);
+				vertex[vertexinc] = { num, num1, num2 };
+				vertexinc++;
+				break;
+			}
+			if (line[1] = 't')
+			{
+				string snum = line.substr(spaces[0] + 1, spaces[1] - spaces[0] - 1);
+				string snum1 = line.substr(spaces[1] + 1, line.size() - spaces[1] - 1);
+				float num = stof(snum);
+				float num1 = stof(snum1);
+				uvcord[uvcordinc] = { num, num1 };
+
+
+				uvcordinc++;
+				break;
+			}
+			//default:
+			//	break;
+		case 'f':
+
+			string spair = line.substr(spaces[0] + 1, spaces[1] - spaces[0] - 1);
+			string spair1 = line.substr(spaces[1] + 1, spaces[2] - spaces[1] - 1);
+			string spair2 = line.substr(spaces[2] + 1, line.size() - spaces[2] - 1);
+
+			int slashes = -1;
+			int slashes0 = line.length();
+			int slashes1 = -1;
+			int slashes01 = line.length();
+			int slashes2 = -1;
+			int slashes02 = line.length();
+			int x = -1;
+			slash(spair, slashes, slashes0);
+			slash(spair1, slashes1, slashes01);
+			slash(spair2, slashes2, slashes02);
+
+
+			//cout << slashes02 << " " << line.length() << "\n";
+			string snum00 = spair.substr(0, slashes);
+			string snum01 = spair.substr(slashes + 1, slashes0 - slashes - 1);
+			string snum02 = spair.substr(slashes0 + 1, spair.length() - slashes0);
+
+			string snum10 = spair1.substr(0, slashes1);
+			string snum11 = spair1.substr(slashes1 + 1, slashes01 - slashes1 - 1);
+			string snum12 = spair1.substr(slashes01 + 1, spair1.length() - slashes01);
+
+			string snum20 = spair2.substr(0, slashes2);
+			string snum21 = spair2.substr(slashes2 + 1, slashes02 - slashes2 - 1);
+			string snum22 = spair2.substr(slashes02 + 1, spair2.length() - slashes02);
+
+
+			int num00 = stoi(snum00);
+			int num01 = stoi(snum01);
+			int num02 = stoi(snum02);
+			int num10 = stoi(snum10);
+			int num11 = stoi(snum11);
+			int num12 = stoi(snum12);
+			int num20 = stoi(snum20);
+			int num21 = stoi(snum21);
+			int num22 = stoi(snum22);
+
+			bool cs = true;
+			bool cs1 = true;
+			bool cs2 = true;
+
+			if (vertexset[num00 - 1][num01 - 1] == 0)
+			{
+				vertexset[num00 - 1].insert_or_assign(num01 - 1, num00 - 1);
+			}
+
+
+			if (vertexset[num10 - 1][num11 - 1] == 0)
+			{
+				vertexset[num10 - 1].insert_or_assign(num11 - 1, num10 - 1);
+			}
+
+
+			if (vertexset[num20 - 1][num21 - 1] == 0)
+			{
+				vertexset[num20 - 1].insert_or_assign(num21 - 1, num20 - 1);
+			}
+
+			index[trinc] = num00 - 1;
+			uvindex[trinc] = num01 - 1;
+			nmindex[trinc] = num02 - 1;
+			trinc++;
+			index[trinc] = num10 - 1;
+			uvindex[trinc] = num11 - 1;
+			nmindex[trinc] = num22 - 1;
+			trinc++;
+			index[trinc] = num20 - 1;
+			uvindex[trinc] = num21 - 1;
+			nmindex[trinc] = num22 - 1;
+			trinc++;
+
+
+
+			break;
+
+		}
+
+
+	}
+
+	int vertexsetinc = 0;
+	int normalsetinc = 0;
+	int unsize = 0;
+
+	float* posuv = new float[uvcordsize * 5];
+
+	for (int i = 0; i < vertexsize; i++)
+	{
+		for (auto& pair : vertexset[i])
+		{
+			vec3 pos = vertex[i];
+			vec2 uv = uvcord[pair.first];
+
+			vertexset[i][pair.first] = vertexsetinc / 8;
+
+			posuv[vertexsetinc / 5] = pos.x;
+			posuv[vertexsetinc / 5 + 1] = pos.y;
+			posuv[vertexsetinc / 5 + 2] = pos.z;
+			posuv[vertexsetinc / 5 + 3] = uv.x;
+			posuv[vertexsetinc / 5 + 4] = uv.y;
+
+			verts[vertexsetinc] = posuv[vertexsetinc / 5];
+			verts[vertexsetinc + 1] = posuv[vertexsetinc / 5 + 1];
+			verts[vertexsetinc + 2] = posuv[vertexsetinc / 5 + 2];
+			verts[vertexsetinc + 3] = posuv[vertexsetinc / 5 + 3];
+			verts[vertexsetinc + 4] = posuv[vertexsetinc / 5 + 4];
+			verts[vertexsetinc + 5] = 1;
+			verts[vertexsetinc + 6] = 1;
+			verts[vertexsetinc + 7] = 1;
+			vertexsetinc += 8;
+		}
+
+	}
+
+	for (int i = 0; i < trisize; i++)
+	{
+
+		index[i] = vertexset[index[i]][uvindex[i]];
+		
+		if (normalset[nmindex[i]][index[i]] == 0)
+		{
+			normalset[nmindex[i]].insert_or_assign(index[i], -1);
+		}
+	}
+
+	for (int i = 0; i < normalsize; i++)
+	{
+		for (auto& pair : normalset[i])
+		{
+			vec3 pos = { posuv[pair.first], posuv[pair.first + 1], posuv[pair.first + 2] };
+			vec2 uv = { posuv[pair.first + 3],posuv[pair.first + 4] };
+			vec3 norm = normal[i];
+			//cout << pair.first << "\n";
+			normalset[i][pair.first] = normalsetinc / 8;
+			
+			verts[normalsetinc] = pos.x;
+			verts[normalsetinc + 1] = pos.y;
+			verts[normalsetinc + 2] = pos.z;
+			verts[normalsetinc + 3] = uv.x;
+			verts[normalsetinc + 4] = uv.y;
+			verts[normalsetinc + 5] = 1;
+			verts[normalsetinc + 6] = 1;  
+			verts[normalsetinc + 7] = 1;
+			normalsetinc += 8;
+		}
+	}
+	for (int i = 0; i < normalsetinc; i+=8)
+	{
+		cout << verts[i + 5] << " " << verts[i + 6] << " " << verts[i + 7] << "\n";
+	}
+
+	
+	for (int i = 0; i < trisize; i++)
+	{
+
+		index[i] = normalset[nmindex[i]][index[i]];
+	//	cout << index[i] << "\n";
+	}
+
+	tisize = trisize * 4;
+	tvsize = uvcordsize * 32;
+
