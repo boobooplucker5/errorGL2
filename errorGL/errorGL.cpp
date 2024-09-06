@@ -261,9 +261,10 @@ void adddraw(unsigned int vao, unsigned int isize, unsigned int text)
     draws[drawcalls+2] = text;
     drawcalls+=3;
 }
-void addrender(unsigned int* buffarr, unsigned int &inc, unsigned int vao, unsigned int vbo, unsigned int vsize)
+void addrender(unsigned int* buffarr, unsigned int &inc, unsigned int vao, unsigned int vbo, unsigned int vsize,float** totalverts , float* verts, float* tverts)
 {
-
+    totalverts[inc / 3 * 2] = verts;
+    totalverts[inc / 3 * 2 + 1] = tverts;
     buffarr[inc] = vao;
     buffarr[inc + 1] = vbo;
     buffarr[inc + 2] = vsize;
@@ -396,20 +397,10 @@ int main()
         unsigned int* buffarray2 = new unsigned int[drawcalls * 3];
         unsigned int renderinc = 0;
         float** renders = new float* [4];
-        renders[0] = booboo.verts;
-        renders[1] = booboo.tverts;
-        renders[2] = booboo2.verts;
-        renders[3] = booboo2.tverts;
-        addrender(buffarray2, renderinc, vao, vbo, booboo.tvsize);
-        addrender(buffarray2, renderinc, vao, vbo, booboo2.tvsize);
 
-
- 
-    
-          
+        addrender(buffarray2, renderinc, vao, vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
+        addrender(buffarray2, renderinc, vao2, vbo2, booboo2.tvsize, renders, booboo2.verts, booboo2.tverts);
         
-
-
         camfront.x = cos(camradx) * cos(camrady);
         camfront.y = sin(camrady);
         camfront.z = sin(camradx) * cos(camrady);
