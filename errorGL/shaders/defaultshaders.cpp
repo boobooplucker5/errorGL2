@@ -12,8 +12,8 @@ const char* vertex =
 "void main()"
 "{"
 
-"vec4 glpos = projmat*viewmat*vec4(pos.x,pos.y,pos.z,1);"
-"gl_Position = glpos;"
+
+"gl_Position = projmat*viewmat*vec4(pos,1);"
 "Color = color;"
 "TexCoord = uv;"
 

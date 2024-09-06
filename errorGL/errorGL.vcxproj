@@ -214,6 +214,7 @@
     <Text Include="bruh.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="meshes\crash.bin" />
     <None Include="meshes\sample.bin" />
     <None Include="shaders\fvertex.glsl" />
   </ItemGroup>

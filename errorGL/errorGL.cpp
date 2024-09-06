@@ -14,7 +14,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "classes/matt3.h"
-
+#include <thread>
 #include "classes/texture.h"
 #include <omp.h>
 #include <fstream>
@@ -270,7 +270,6 @@ void addrender()
 int main()                                        
 {
 
-   
     glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f); 
     mesh booboo2;
     mesh booboo;
@@ -286,8 +285,9 @@ int main()
      booboo.verts[i+2] /= 100;
  }
 
-    booboo2.objload("meshes/crash.txt");
-
+  //  booboo2.objload("meshes/crash.txt");
+   // booboo2.convert("meshes/crash.bin");
+ booboo2.load("meshes/crash.bin");
     double finish = omp_get_wtime();
    cout << finish - start << "\n";
     glfwInit();
