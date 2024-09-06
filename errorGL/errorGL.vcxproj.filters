@@ -194,6 +194,9 @@
   <ItemGroup>
     <None Include="shaders\fvertex.glsl" />
     <None Include="meshes\sample.bin" />
+    <None Include="meshes\crash.bin">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\garss.png">
