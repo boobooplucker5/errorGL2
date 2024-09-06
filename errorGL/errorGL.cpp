@@ -235,7 +235,6 @@ void drawobjects(unsigned int* buffarray, unsigned int drawcalls)
     }
 
 };
-
 void renderobjects(unsigned int* buffarray, unsigned int rendercalls, float** totalverts)
 {
     for (unsigned int i = 0; i < rendercalls; i++)
@@ -262,9 +261,13 @@ void adddraw(unsigned int vao, unsigned int isize, unsigned int text)
     draws[drawcalls+2] = text;
     drawcalls+=3;
 }
-void addrender()
+void addrender(unsigned int* buffarr, unsigned int &inc, unsigned int vao, unsigned int vbo, unsigned int vsize)
 {
 
+    buffarr[inc] = vao;
+    buffarr[inc + 1] = vbo;
+    buffarr[inc + 2] = vsize;
+    inc += 3;
 }
 
 int main()                                        
@@ -397,15 +400,9 @@ int main()
         renders[1] = booboo.tverts;
         renders[2] = booboo2.verts;
         renders[3] = booboo2.tverts;
+        addrender(buffarray2, renderinc, vao, vbo, booboo.tvsize);
+        addrender(buffarray2, renderinc, vao, vbo, booboo2.tvsize);
 
-        buffarray2[renderinc] = vao;
-        buffarray2[renderinc + 1] = vbo;
-        buffarray2[renderinc+2] = booboo.tvsize;
-        renderinc+=3;
-        buffarray2[renderinc] = vao2;
-        buffarray2[renderinc + 1] = vbo2;
-        buffarray2[renderinc + 2] = booboo2.tvsize;
-        renderinc += 3;
 
  
     
