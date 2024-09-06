@@ -400,7 +400,7 @@ int main()
 
         addrender(buffarray2, renderinc, vao, vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
         addrender(buffarray2, renderinc, vao2, vbo2, booboo2.tvsize, renders, booboo2.verts, booboo2.tverts);
-        
+        //
         camfront.x = cos(camradx) * cos(camrady);
         camfront.y = sin(camrady);
         camfront.z = sin(camradx) * cos(camrady);
