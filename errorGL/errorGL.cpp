@@ -16,6 +16,7 @@
 #include "classes/matt3.h"
 #include <thread>
 #include "classes/texture.h"
+#include "classes/drawobj.h"
 #include <omp.h>
 #include <fstream>
 #define STB_IMAGE_IMPLEMENTATION
@@ -47,15 +48,16 @@ extern const char* fvertex;
 extern const char* ffrag;
 
 unsigned int* draws = new unsigned int[256];
-void makedrawobj(float *vertices, unsigned int* indices, int svert, int sind, unsigned int& vbo, unsigned int& vao, unsigned int& ebo)
+drawobj makedrawobj(float *vertices, unsigned int* indices, int svert, int sind)
 {
-    glGenBuffers(1, &vbo);
-    glGenVertexArrays(1, &vao);
-    glGenBuffers(1, &ebo);
-    glBindVertexArray(vao);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    drawobj obj(0,0,0,);
+    glGenBuffers(1, &obj.vbo);
+    glGenVertexArrays(1, &obj.vao);
+    glGenBuffers(1, &obj.ebo);
+    glBindVertexArray(obj.vao);
+    glBindBuffer(GL_ARRAY_BUFFER, obj.vbo);
     glBufferData(GL_ARRAY_BUFFER, svert, vertices, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj.ebo);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sind, indices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -340,7 +342,7 @@ int main()
     };
     
 
-    unsigned int svbo, svao, sebo;
+    
     makedrawobj(vertices,indices,144,24,svbo,svao,sebo);
     unsigned int vbo, vao, ebo;
     makedrawobj(booboo.verts, booboo.index,booboo.tvsize,booboo.tisize, vbo, vao, ebo);
