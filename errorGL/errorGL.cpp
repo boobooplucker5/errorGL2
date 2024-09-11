@@ -31,10 +31,10 @@ float camradx = 0;
 float camrady = 0;
 float t = 1;
 glm::vec3 campos = glm::vec3(0, 0, 0);
-glm::vec3 camfront = glm::vec3(0,0,1);
+glm::vec3 camfront = glm::vec3(0, 0, 1);
 glm::vec3 camup = glm::vec3(0, 1, 0);
 glm::vec3 camright = glm::vec3(1, 0, 0);
-float inc= 1;
+float inc = 1;
 int mouseholdr = 0;
 double xpos = 800;
 double ypos = 800;
@@ -48,11 +48,11 @@ extern const char* fvertex;
 extern const char* ffrag;
 
 unsigned int* draws = new unsigned int[256];
-drawobj makedrawobj(float *vertices, unsigned int* indices, int svert, int sind)
+drawobj makedrawobj(float* vertices, unsigned int* indices, int svert, int sind)
 {
-    drawobj obj(0,0,0,);
-    glGenBuffers(1, &obj.vbo);
-    glGenVertexArrays(1, &obj.vao);
+    drawobj obj;
+    glGenBuffers(1,&obj.vbo);
+    glGenVertexArrays(1,&obj.vao);
     glGenBuffers(1, &obj.ebo);
     glBindVertexArray(obj.vao);
     glBindBuffer(GL_ARRAY_BUFFER, obj.vbo);
@@ -65,6 +65,8 @@ drawobj makedrawobj(float *vertices, unsigned int* indices, int svert, int sind)
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
     glEnableVertexAttribArray(2);
+    return obj;
+
 }
 void move(int key)
 {
@@ -74,59 +76,59 @@ void move(int key)
         campos.x = campos.x + camfront.x / 1000 * inc;
         campos.y = campos.y + camfront.y / 1000 * inc;
         campos.z = campos.z + camfront.z / 1000 * inc;
-    break;
+        break;
     case 65:
         campos.x = campos.x + camright.x / 1000 * inc;
         campos.y = campos.y + camright.y / 1000 * inc;
         campos.z = campos.z + camright.z / 1000 * inc;
-    break;
+        break;
     case 83:
         campos.x = campos.x - camfront.x / 1000 * inc;
         campos.y = campos.y - camfront.y / 1000 * inc;
         campos.z = campos.z - camfront.z / 1000 * inc;
-    break;
+        break;
     case 68:
         campos.x = campos.x - camright.x / 1000 * inc;
         campos.y = campos.y - camright.y / 1000 * inc;
         campos.z = campos.z - camright.z / 1000 * inc;
-    break;
+        break;
     case 32:
-        campos.y -= 0.001f*inc;
-    break;
+        campos.y -= 0.001f * inc;
+        break;
     case 340:
-        campos.y += 0.001f*inc;
-    break;
+        campos.y += 0.001f * inc;
+        break;
     case  82:
-    camradx += 0.0005f;
-    break;
+        camradx += 0.0005f;
+        break;
     case 84:
-    camradx -= 0.0005f;
-    break;
+        camradx -= 0.0005f;
+        break;
     case 70:
-    camrady += 0.0005f;
-    break;
+        camrady += 0.0005f;
+        break;
     case 71:
-    camrady -= 0.0005f;
-    break;
+        camrady -= 0.0005f;
+        break;
     default:
-    break;
+        break;
     }
 }
 void ifpressed(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (action == GLFW_PRESS)
     {
-      //  cout << key << "\n";
-            for (int i = 0; i < sizeof(keynums) / 4; i++)
+        //  cout << key << "\n";
+        for (int i = 0; i < sizeof(keynums) / 4; i++)
+        {
+            if (key == keynums[i])
             {
-                if (key == keynums[i])
-                {
-                    keyholds[i] = 1;
-                }
+                keyholds[i] = 1;
             }
-        
+        }
+
     }
-   
+
     if (action == GLFW_RELEASE)
     {
 
@@ -148,21 +150,21 @@ void ifclicked(GLFWwindow* window, int button, int action, int mods)
         if (button == GLFW_MOUSE_BUTTON_RIGHT)
         {
             mouseholdr = 1;
-            
+
         }
-    break;
+        break;
 
     case GLFW_RELEASE:
         if (button == GLFW_MOUSE_BUTTON_RIGHT)
         {
-          
+
             mouseholdr = 0;
         }
-    break;
+        break;
 
     default:
-    break;
-   }
+        break;
+    }
 }
 
 void ifs(GLFWwindow* window)
@@ -227,13 +229,13 @@ void keystuff()
 };
 void drawobjects(unsigned int* buffarray, unsigned int drawcalls)
 {
-    for (int i = 0; i < drawcalls; i+=3)
+    for (int i = 0; i < drawcalls; i += 3)
     {
-      
+
         glBindVertexArray(buffarray[i]);
-        glBindTexture(GL_TEXTURE_2D, buffarray[i+2]);
-        glDrawElements(GL_TRIANGLES,buffarray[i+1], GL_UNSIGNED_INT, 0);
-        
+        glBindTexture(GL_TEXTURE_2D, buffarray[i + 2]);
+        glDrawElements(GL_TRIANGLES, buffarray[i + 1], GL_UNSIGNED_INT, 0);
+
     }
 
 };
@@ -246,24 +248,24 @@ void renderobjects(unsigned int* buffarray, unsigned int rendercalls, float** to
 
 
         boi = { float(sin(t)),0,float(-cos(t)),0,1,0,float(cos(t)),0,float(sin(t)) };
-        boi.vertmult(totalverts[i*2], totalverts[i*2+1], buffarray[i*3+2]/4);
-        glBindVertexArray(buffarray[i*3]);
-        glBindBuffer(GL_ARRAY_BUFFER, buffarray[i*3+1]);
-        glBufferData(GL_ARRAY_BUFFER, buffarray[i*3+2], totalverts[i*2+1], GL_STATIC_DRAW);
- 
+        boi.vertmult(totalverts[i * 2], totalverts[i * 2 + 1], buffarray[i * 3 + 2] / 4);
+        glBindVertexArray(buffarray[i * 3]);
+        glBindBuffer(GL_ARRAY_BUFFER, buffarray[i * 3 + 1]);
+        glBufferData(GL_ARRAY_BUFFER, buffarray[i * 3 + 2], totalverts[i * 2 + 1], GL_STATIC_DRAW);
+
     }
-   // 0 0 1 1
-   // 0 1 2 3
-   // 0 2 4 6
+    // 0 0 1 1
+    // 0 1 2 3
+    // 0 2 4 6
 }
 void adddraw(unsigned int vao, unsigned int isize, unsigned int text)
 {
     draws[drawcalls] = vao;
-    draws[drawcalls+1] = isize;
-    draws[drawcalls+2] = text;
-    drawcalls+=3;
+    draws[drawcalls + 1] = isize;
+    draws[drawcalls + 2] = text;
+    drawcalls += 3;
 }
-void addrender(unsigned int* buffarr, unsigned int &inc, unsigned int vao, unsigned int vbo, unsigned int vsize,float** totalverts , float* verts, float* tverts)
+void addrender(unsigned int* buffarr, unsigned int& inc, unsigned int vao, unsigned int vbo, unsigned int vsize, float** totalverts, float* verts, float* tverts)
 {
     totalverts[inc / 3 * 2] = verts;
     totalverts[inc / 3 * 2 + 1] = tverts;
@@ -273,41 +275,41 @@ void addrender(unsigned int* buffarr, unsigned int &inc, unsigned int vao, unsig
     inc += 3;
 }
 
-int main()                                        
+int main()
 {
 
-    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f); 
+    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
     mesh booboo2;
     mesh booboo;
     double start = omp_get_wtime();
- 
-//booboo.objload("meshes/gunno.txt");
-//booboo.convert("meshes/sample.bin");
- booboo.load("meshes/sample.bin");
- for (int i = 0; i < booboo.tvsize / 4; i+=8)
- {
-     booboo.verts[i] /= 100;
-     booboo.verts[i+1] /= 100;
-     booboo.verts[i+2] /= 100;
- }
 
-  //  booboo2.objload("meshes/crash.txt");
-   // booboo2.convert("meshes/crash.bin");
- booboo2.load("meshes/crash.bin");
+    //booboo.objload("meshes/gunno.txt");
+    //booboo.convert("meshes/sample.bin");
+    booboo.load("meshes/sample.bin");
+    for (int i = 0; i < booboo.tvsize / 4; i += 8)
+    {
+        booboo.verts[i] /= 100;
+        booboo.verts[i + 1] /= 100;
+        booboo.verts[i + 2] /= 100;
+    }
+
+    //  booboo2.objload("meshes/crash.txt");
+     // booboo2.convert("meshes/crash.bin");
+    //booboo2.load("meshes/crash.bin");
     double finish = omp_get_wtime();
-   cout << finish - start << "\n";
+    cout << finish - start << "\n";
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     glm::mat4 projmat = glm::perspective(glm::radians(120.0f), 1.0f, 0.001f, 1000.0f);
-    glm::mat4 transmat = glm::translate(glm::mat4(1.0f), glm::vec3(0,-20,0));
-    glm::mat4 viewmat = glm::lookAt(campos,campos+camfront,camup);
-  
-  
+    glm::mat4 transmat = glm::translate(glm::mat4(1.0f), glm::vec3(0, -20, 0));
+    glm::mat4 viewmat = glm::lookAt(campos, campos + camfront, camup);
+
+
     GLFWwindow* window = glfwCreateWindow(800, 800, " i always have the hardest bugs ;-;", NULL, NULL);
-    
+
 
 
     glfwMakeContextCurrent(window);
@@ -338,24 +340,24 @@ int main()
 
     unsigned int indices[] = {
         1, 0, 3,
-        1, 2, 3  
-    };
-    
+        1, 2, 3
+    }; 
 
-    
-    makedrawobj(vertices,indices,144,24,svbo,svao,sebo);
-    unsigned int vbo, vao, ebo;
-    makedrawobj(booboo.verts, booboo.index,booboo.tvsize,booboo.tisize, vbo, vao, ebo);
-    unsigned int vbo2, vao2, ebo2;
-    makedrawobj(booboo2.verts, booboo2.index, booboo2.tvsize, booboo2.tisize, vbo2, vao2, ebo2);
-  
+   // unsigned int svbo, svao, sebo;
+
+    drawobj sobj =  makedrawobj(vertices, indices, 144, 24);
+  //  unsigned int vbo, vao, ebo;
+    drawobj obj = makedrawobj(booboo.verts, booboo.index, booboo.tvsize, booboo.tisize);
+   // unsigned int vbo2, vao2, ebo2;
+    //makedrawobj(booboo2.verts, booboo2.index, booboo2.tvsize, booboo2.tisize, vbo2, vao2, ebo2);
+
 
     texture text("Textures/white.png");
     texture text2("Textures/scrap.png");
     unsigned int fbo;
     glGenFramebuffers(1, &fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-    
+
 
 
     unsigned int textureColorbuffer;
@@ -385,116 +387,114 @@ int main()
     GLuint tlocation = glGetUniformLocation(frameShader.program, "t");
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-   glEnable(GL_DEPTH_CLAMP);
-  
+    glEnable(GL_DEPTH_CLAMP);
+
     glCullFace(GL_BACK);
-    adddraw(vao,booboo.tisize,text.id);
-    adddraw(vao2, booboo2.tisize, text.id);
+
+    adddraw(obj.vao, booboo.tisize, text.id);
+   // adddraw(vao2, booboo2.tisize, text.id);
     while (!glfwWindowShouldClose(window))
     {
 
         t += 0.001;
-        matt3 rotmatx = {sin(t),0,-cos(t),0,1,0,cos(t),0,sin(t)};
-        unsigned int rendersize = (booboo.tisize+booboo2.tisize)/4;
+        matt3 rotmatx = { sin(t),0,-cos(t),0,1,0,cos(t),0,sin(t) };
+        unsigned int rendersize = (booboo.tisize) / 4;
         unsigned int* buffarray2 = new unsigned int[drawcalls * 3];
         unsigned int renderinc = 0;
         float** renders = new float* [4];
 
-        addrender(buffarray2, renderinc, vao, vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
-        addrender(buffarray2, renderinc, vao2, vbo2, booboo2.tvsize, renders, booboo2.verts, booboo2.tverts);
+        addrender(buffarray2, renderinc, obj.vao, obj.vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
+        //addrender(buffarray2, renderinc, vao2, vbo2, booboo2.tvsize, renders, booboo2.verts, booboo2.tverts);
         //
         camfront.x = cos(camradx) * cos(camrady);
         camfront.y = sin(camrady);
         camfront.z = sin(camradx) * cos(camrady);
         camfront = normalize(camfront);
-        camright = normalize(cross(glm::vec3(0,1,0),camfront));
-        camup = normalize(cross(camfront,camright));
+        camright = normalize(cross(glm::vec3(0, 1, 0), camfront));
+        camup = normalize(cross(camfront, camright));
         viewmat = lookAt(campos, campos + camfront, camup);
 
         ifs(window);
         keystuff();
 
-       
 
-     //   drawinc+=3;
-       // draws[drawinc] = vao2;
-      //  draws[drawinc+1] = booboo2.tisize / 4;
-     //   draws[drawinc+2] = text.id;
-     //   drawinc+=3;
+
+        //   drawinc+=3;
+          // draws[drawinc] = vao2;
+         //  draws[drawinc+1] = booboo2.tisize / 4;
+        //   draws[drawinc+2] = text.id;
+        //   drawinc+=3;
         glUniform1f(tlocation, 3 * 0.00125);
-       
+
 
         glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
 
-        glClearColor(0.2f, 0.1f, 0.4f, 1.0f);         
+        glClearColor(0.2f, 0.1f, 0.4f, 1.0f);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        transmat = glm::translate(glm::mat4(1.0f), glm::vec3(camx,camy,camz));
+        transmat = glm::translate(glm::mat4(1.0f), glm::vec3(camx, camy, camz));
 
         glUseProgram(defaultShader.program);
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
- 
+
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "projmat"), 1, GL_FALSE, &projmat[0][0]);
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "transmat"), 1, GL_FALSE, &transmat[0][0]);
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "viewmat"), 1, GL_FALSE, &viewmat[0][0]);
-    
 
-       
+
+
         drawobjects(draws, drawcalls);
 
 
-        renderobjects(buffarray2, 2, renders);
-     //   glBindVertexArray(vao);
-     //  glBindBuffer(GL_ARRAY_BUFFER, vbo);
-      //glBufferData(GL_ARRAY_BUFFER, booboo.tvsize, booboo.verts, GL_STATIC_DRAW);
-       //glBindBuffer(GL_ARRAY_BUFFER, 0);
-       //glBindVertexArray(vao2);
-      // glBindBuffer(GL_ARRAY_BUFFER, vbo2);
-       //glBufferData(GL_ARRAY_BUFFER, booboo2.tvsize, booboo2.verts, GL_STATIC_DRAW);
-       //glBindBuffer(GL_ARRAY_BUFFER, 0);
-      glBindTexture(GL_TEXTURE_2D, text.id);
-      // glDrawElements(GL_TRIANGLES, booboo.tisize/4, GL_UNSIGNED_INT, 0);
+        renderobjects(buffarray2, 1, renders);
+        //   glBindVertexArray(vao);
+        //  glBindBuffer(GL_ARRAY_BUFFER, vbo);
+         //glBufferData(GL_ARRAY_BUFFER, booboo.tvsize, booboo.verts, GL_STATIC_DRAW);
+          //glBindBuffer(GL_ARRAY_BUFFER, 0);
+          //glBindVertexArray(vao2);
+         // glBindBuffer(GL_ARRAY_BUFFER, vbo2);
+          //glBufferData(GL_ARRAY_BUFFER, booboo2.tvsize, booboo2.verts, GL_STATIC_DRAW);
+          //glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindTexture(GL_TEXTURE_2D, text.id);
+        // glDrawElements(GL_TRIANGLES, booboo.tisize/4, GL_UNSIGNED_INT, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-       glDisable(GL_DEPTH_TEST);
-       glDisable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_CULL_FACE);
 
-       glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    
-
-       glUseProgram(frameShader.program);
-     
-      glBindVertexArray(svao);
-
-      glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
-      glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 
-      pxpos = xpos;
-      pypos = ypos;
-  
+        glUseProgram(frameShader.program);
+
+        glBindVertexArray(sobj.vao);
+
+        glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+
+        pxpos = xpos;
+        pypos = ypos;
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
 
 
-    glDeleteVertexArrays(1, &svao);
-    glDeleteBuffers(1, &svbo);
-    glDeleteBuffers(1, &sebo);
 
- 
+
     glfwTerminate();
 
 
-   // delete booboo.index;
-    //delete booboo.vertex;
-   // delete booboo.uvindex;
-   // delete booboo.uvcord;
-    //delete booboo.nmindex;
-   // delete booboo.normal;
-    //delete booboo.verts;
+    // delete booboo.index;
+     //delete booboo.vertex;
+    // delete booboo.uvindex;
+    // delete booboo.uvcord;
+     //delete booboo.nmindex;
+    // delete booboo.normal;
+     //delete booboo.verts;
     return 0;
 }

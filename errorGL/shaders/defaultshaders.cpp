@@ -14,7 +14,7 @@ const char* vertex =
 
 
 "gl_Position = projmat*viewmat*vec4(pos,1);"
-"Color = color;"
+"Color = vec3(max(0.1,color.x),max(0.1,color.y),max(0.1,color.z));"
 "TexCoord = uv;"
 
 " }";

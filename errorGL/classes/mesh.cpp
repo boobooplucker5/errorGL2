@@ -257,9 +257,9 @@ void mesh::objload(const char* directory)
 		verts[sp + 5] = 1;
 		verts[sp + 6] = 1;
 		verts[sp + 7] = 1;
-		verts[sp + 5] = abs(norm.x);
-		verts[sp + 6] = abs(norm.y);
-		verts[sp + 7] = abs(norm.z);
+		verts[sp + 5] = norm.x;
+		verts[sp + 6] = norm.y;
+		verts[sp + 7] = norm.z;
 
 
 	}
