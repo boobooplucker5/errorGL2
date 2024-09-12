@@ -2,7 +2,7 @@ const char* vertex =
 "#version 330 core\r\n"
 "layout(location = 0) in vec3 pos;"
 "layout(location = 1) in vec2 uv;"
-"layout(location = 2) in vec3 color;"
+"layout(location = 2) in vec3 norm;"
 
 "uniform mat4 projmat;"
 "uniform mat4 viewmat;"
@@ -14,7 +14,7 @@ const char* vertex =
 
 
 "gl_Position = projmat*viewmat*vec4(pos,1);"
-"Color = vec3(max(0.1,color.x),max(0.1,color.y),max(0.1,color.z));"
+"Color = vec3(0.6,0.6,0.6)*max(0.2,norm.x);"
 "TexCoord = uv;"
 
 " }";
