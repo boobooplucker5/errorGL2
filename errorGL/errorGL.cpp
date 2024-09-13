@@ -34,7 +34,7 @@ glm::vec3 campos = glm::vec3(0, 0, 0);
 glm::vec3 camfront = glm::vec3(0, 0, 1);
 glm::vec3 camup = glm::vec3(0, 1, 0);
 glm::vec3 camright = glm::vec3(1, 0, 0);
-float inc = 1;
+float inc = 0.03;
 int mouseholdr = 0;
 double xpos = 800;
 double ypos = 800;
@@ -239,16 +239,16 @@ void drawobjects(unsigned int* buffarray, unsigned int drawcalls)
     }
 
 };
-void renderobjects(unsigned int* buffarray, unsigned int rendercalls, float** totalverts)
+void renderobjects(unsigned int* buffarray, unsigned int rendercalls, float** totalverts, matt3 mat)
 {
     for (unsigned int i = 0; i < rendercalls; i++)
     {
-        matt3 boi;
 
 
 
-        boi = { float(sin(t)),0,float(-cos(t)),0,1,0,float(cos(t)),0,float(sin(t)) };
-        boi.vertmult(totalverts[i * 2], totalverts[i * 2 + 1], buffarray[i * 3 + 2] / 4);
+
+      
+        mat.vertmult(totalverts[i * 2], totalverts[i * 2 + 1], buffarray[i * 3 + 2] / 4);
         glBindVertexArray(buffarray[i * 3]);
         glBindBuffer(GL_ARRAY_BUFFER, buffarray[i * 3 + 1]);
         glBufferData(GL_ARRAY_BUFFER, buffarray[i * 3 + 2], totalverts[i * 2 + 1], GL_STATIC_DRAW);
@@ -283,9 +283,9 @@ int main()
     mesh booboo;
     double start = omp_get_wtime();
 
-    //booboo.objload("meshes/gunno.txt");
+    booboo.objload("meshes/cubi.txt");
     //booboo.convert("meshes/sample.bin");
-    booboo.load("meshes/sample.bin");
+    //booboo.load("meshes/sample.bin");
     for (int i = 0; i < booboo.tvsize / 4; i += 8)
     {
         booboo.verts[i] /= 100;
@@ -424,7 +424,7 @@ int main()
          //  draws[drawinc+1] = booboo2.tisize / 4;
         //   draws[drawinc+2] = text.id;
         //   drawinc+=3;
-        glUniform1f(tlocation, 3 * 0.00125);
+        glUniform1f(tlocation, 1 * 0.00125);
 
 
         glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -442,15 +442,14 @@ int main()
         glEnable(GL_CULL_FACE);
 
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "projmat"), 1, GL_FALSE, &projmat[0][0]);
-        glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "transmat"), 1, GL_FALSE, &transmat[0][0]);
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "viewmat"), 1, GL_FALSE, &viewmat[0][0]);
 
-
+        booboo.transmat = { float(sin(t)),0,float(-cos(t)),0,1,0,float(cos(t)),0,float(sin(t)) };
 
         drawobjects(draws, drawcalls);
 
 
-        renderobjects(buffarray2, 1, renders);
+        renderobjects(buffarray2, 1, renders,booboo.transmat);
         //   glBindVertexArray(vao);
         //  glBindBuffer(GL_ARRAY_BUFFER, vbo);
          //glBufferData(GL_ARRAY_BUFFER, booboo.tvsize, booboo.verts, GL_STATIC_DRAW);
