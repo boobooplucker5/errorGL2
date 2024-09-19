@@ -214,6 +214,7 @@
     <Text Include="meshes\spere.txt" />
     <Text Include="meshes\terrain.txt" />
     <Text Include="bruh.txt" />
+    <Text Include="misc\miscy_stuff.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="meshes\crash.bin" />

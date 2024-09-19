@@ -196,6 +196,7 @@
     <Text Include="meshes\spere.txt" />
     <Text Include="meshes\crash.txt" />
     <Text Include="meshes\gunno.txt" />
+    <Text Include="misc\miscy_stuff.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fvertex.glsl" />
