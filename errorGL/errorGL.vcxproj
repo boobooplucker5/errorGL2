@@ -211,6 +211,8 @@
     <Text Include="meshes\cubee.txt" />
     <Text Include="meshes\cubi.txt" />
     <Text Include="meshes\gunno.txt" />
+    <Text Include="meshes\hqsphere.txt" />
+    <Text Include="meshes\pyramid.txt" />
     <Text Include="meshes\spere.txt" />
     <Text Include="meshes\terrain.txt" />
     <Text Include="bruh.txt" />
@@ -218,6 +220,7 @@
   <ItemGroup>
     <None Include="meshes\crash.bin" />
     <None Include="meshes\sample.bin" />
+    <None Include="meshes\spere.bin" />
     <None Include="shaders\fvertex.glsl" />
   </ItemGroup>
   <ItemGroup>

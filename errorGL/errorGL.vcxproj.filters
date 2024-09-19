@@ -196,11 +196,16 @@
     <Text Include="meshes\spere.txt" />
     <Text Include="meshes\crash.txt" />
     <Text Include="meshes\gunno.txt" />
+    <Text Include="meshes\pyramid.txt" />
+    <Text Include="meshes\hqsphere.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fvertex.glsl" />
     <None Include="meshes\sample.bin" />
     <None Include="meshes\crash.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="meshes\spere.bin">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

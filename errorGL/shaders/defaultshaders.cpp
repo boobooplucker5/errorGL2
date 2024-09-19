@@ -3,33 +3,56 @@ const char* vertex =
 "layout(location = 0) in vec3 pos;"
 "layout(location = 1) in vec2 uv;"
 "layout(location = 2) in vec3 norm;"
-//"layout(location = 3) in vec3 lightdir"
+
 "uniform mat4 projmat;"
 "uniform mat4 viewmat;"
-"out vec2 TexCoord;"
-"out vec3 Color;"
+
+"out vec2 textcord;"
+"out vec3 color;"
+
+"out vec3 fragpos;"
+"out vec3 normal;"
 
 "void main()"
 "{"
 
 
 "gl_Position = projmat*viewmat*vec4(pos,1);"
-"Color = vec3(0.6,0.6,0.6)*max(0.2,norm.x);"
-"TexCoord = uv;"
+
+"textcord = uv;"
+"color = vec3(0.2,0.2,0.2);"
+"fragpos = pos;"
+"normal = norm;"
 
 " }";
 const char* frag =
 "#version 330 core\r\n"
-"out vec4 FragColor;"
+"out vec4 fragcolor;"
 
-"in vec3 Color;"
-"in vec2 TexCoord;"
+"uniform vec3 campos;"
 
-"uniform sampler2D ourTexture;"
+"in vec3 color;"
+"in vec2 textcord;"
+
+"in vec3 fragpos;"
+"in vec3 normal;"
+
+"uniform sampler2D text;"
+
 
 
 "void main()"
 "{"
-" FragColor = (texture2D(ourTexture, TexCoord))*vec4(Color,1);"
+"float lightpower = 100;"
+"vec3 lightdirection = normalize(vec3(1000,1000,1000) - fragpos);"
+"float distance = length(vec3(1000,1000,1000) - fragpos);"
+"float diffuse = max(dot(lightdirection,normal),0) / (distance/30/lightpower);"
+
+"vec3 viewdirection = normalize(campos - fragpos);"
+"vec3 reflectdirection = reflect(-lightdirection,normal);"
+"vec3 lightcolor = vec3(0,1,0);"
+"float specular = pow(max(dot(viewdirection,reflectdirection),0),max(distance/ (lightpower*100) ,1));"
+"vec3 light = vec3( (diffuse + specular)*lightcolor.x,(diffuse + specular)*lightcolor.y,(diffuse + specular)*lightcolor.z);"
+"fragcolor = texture2D(text, textcord)*vec4(color.x+0.2,color.y+0.2,color.z+0.2,1)+vec4(light,1);"
 
 "}";

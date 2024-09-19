@@ -29,12 +29,12 @@ int keyholds[] = { 0,0,0,0,0,0,0,0,0,0,0,0 };
 int keynums[] = { 87,65,83,68,81,69,82,84,70,71,32,340 };
 float camradx = 0;
 float camrady = 0;
-float t = 1;
+float t = 5;
 glm::vec3 campos = glm::vec3(0, 0, 0);
 glm::vec3 camfront = glm::vec3(0, 0, 1);
 glm::vec3 camup = glm::vec3(0, 1, 0);
 glm::vec3 camright = glm::vec3(1, 0, 0);
-float inc = 0.03;
+float inc = 100;
 int mouseholdr = 0;
 double xpos = 800;
 double ypos = 800;
@@ -283,14 +283,15 @@ int main()
     mesh booboo;
     double start = omp_get_wtime();
 
-    booboo.objload("meshes/cubi.txt");
-    //booboo.convert("meshes/sample.bin");
-    //booboo.load("meshes/sample.bin");
+//   booboo.objload("meshes/pyramid.txt");
+  // booboo.objload("meshes/hqsphere.txt");
+    //booboo.convert("meshes/spere.bin");
+    booboo.load("meshes/spere.bin");
     for (int i = 0; i < booboo.tvsize / 4; i += 8)
     {
-        booboo.verts[i] /= 100;
-        booboo.verts[i + 1] /= 100;
-        booboo.verts[i + 2] /= 100;
+       booboo.verts[i] /= 0.0100;
+        booboo.verts[i + 1] /= 0.0100;
+       booboo.verts[i + 2] /= 0.0100;
     }
 
     //  booboo2.objload("meshes/crash.txt");
@@ -325,7 +326,7 @@ int main()
     frameShader.createShader(fvertex, ffrag);
 
     glUseProgram(frameShader.program);
-    glUniform1i(glGetUniformLocation(frameShader.program, "ourTexture"), 0);
+    glUniform1i(glGetUniformLocation(frameShader.program, "text"), 0);
 
 
     float vertices[] = {
@@ -443,13 +444,13 @@ int main()
 
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "projmat"), 1, GL_FALSE, &projmat[0][0]);
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "viewmat"), 1, GL_FALSE, &viewmat[0][0]);
-
+        glUniform3f(glGetUniformLocation(defaultShader.program, "campos"), campos.x, campos.y, campos.z);
         booboo.transmat = { float(sin(t)),0,float(-cos(t)),0,1,0,float(cos(t)),0,float(sin(t)) };
 
         drawobjects(draws, drawcalls);
 
 
-        renderobjects(buffarray2, 1, renders,booboo.transmat);
+        //renderobjects(buffarray2, 1, renders,booboo.transmat);
         //   glBindVertexArray(vao);
         //  glBindBuffer(GL_ARRAY_BUFFER, vbo);
          //glBufferData(GL_ARRAY_BUFFER, booboo.tvsize, booboo.verts, GL_STATIC_DRAW);
