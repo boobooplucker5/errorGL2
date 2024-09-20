@@ -1,26 +1,32 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include <cmath>
-#include <vector>
 #include "stb_image.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <map>
+#include <cmath>
+#include <vector>
+
 #include "classes/shader.h"
 #include "classes/vec3.h"
 #include "classes/mesh.h"
+#include "classes/texture.h"
+#include "classes/drawobj.h"
+#include "classes/matt3.h"
+#include "classes/ui.h"
+
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "classes/matt3.h"
+
 #include <thread>
-#include "classes/texture.h"
-#include "classes/drawobj.h"
 #include <omp.h>
 #include <algorithm>
 #include <fstream>
 #define STB_IMAGE_IMPLEMENTATION
+
 int drawcalls = 0;
 int drawinc = 0;
 vector<unsigned int> keyholds = {};
@@ -28,7 +34,7 @@ vector<unsigned int> keyholds = {};
 
 float camradx = 0;
 float camrady = 0;
-float t = 5;
+float t = 0;
 glm::vec3 campos = glm::vec3(0, 0, 0);
 glm::vec3 camfront = glm::vec3(0, 0, 1);
 glm::vec3 camup = glm::vec3(0, 1, 0);
@@ -270,7 +276,7 @@ int main()
     mesh booboo2;
     mesh booboo;
     double start = omp_get_wtime();
-
+   
       booboo.objload("meshes/cubi.txt");
       // booboo.objload("meshes/hqsphere.txt");
         //booboo.convert("meshes/spere.bin");
@@ -291,7 +297,7 @@ int main()
     glm::mat4 viewmat = glm::lookAt(campos, campos + camfront, camup);
 
 
-    GLFWwindow* window = glfwCreateWindow(800, 800, " i always have the hardest bugs ;-;", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 800, "window", NULL, NULL);
 
 
 
@@ -309,6 +315,7 @@ int main()
 
     glUseProgram(frameShader.program);
     glUniform1i(glGetUniformLocation(frameShader.program, "text"), 0);
+
 
 
     float vertices[] = {
@@ -370,7 +377,7 @@ int main()
 
     glCullFace(GL_BACK);
 
-    adddraw(obj.vao, booboo.tisize, text.id);
+    //adddraw(obj.vao, booboo.tisize, text.id);
     // adddraw(vao2, booboo2.tisize, text.id);
     while (!glfwWindowShouldClose(window))
     {
@@ -387,7 +394,7 @@ int main()
         unsigned int renderinc = 0;
         float** renders = new float* [4];
        
-        addrender(buffarray2, renderinc, obj.vao, obj.vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
+       // addrender(buffarray2, renderinc, obj.vao, obj.vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
         //addrender(buffarray2, renderinc, vao2, vbo2, booboo2.tvsize, renders, booboo2.verts, booboo2.tverts);
         //
         camfront.x = cos(camradx) * cos(camrady);
@@ -427,7 +434,7 @@ int main()
         glUniform3f(glGetUniformLocation(defaultShader.program, "campos"), campos.x, campos.y, campos.z);
         booboo.transmat = { float(sin(t)),0,float(-cos(t)),0,1,0,float(cos(t)),0,float(sin(t)) };
 
-        drawobjects(draws, drawcalls);
+      //  drawobjects(draws, drawcalls);
 
 
         //renderobjects(buffarray2, 1, renders,booboo.transmat);

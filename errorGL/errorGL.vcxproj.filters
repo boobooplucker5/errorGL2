@@ -63,6 +63,12 @@
     <ClCompile Include="classes\drawobj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="classes\ui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders\uishader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\include\GLFW\glfw3native.h">
@@ -182,6 +188,9 @@
     <ClInclude Include="classes\drawobj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="classes\ui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\glfw3.lib" />
@@ -197,6 +206,8 @@
     <Text Include="meshes\crash.txt" />
     <Text Include="meshes\gunno.txt" />
     <Text Include="misc\miscy_stuff.txt" />
+    <Text Include="meshes\hqsphere.txt" />
+    <Text Include="meshes\pyramid.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fvertex.glsl" />
