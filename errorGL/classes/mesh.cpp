@@ -252,8 +252,8 @@ void mesh::objload(const char* directory)
 		verts[sp] = pos.x;
 		verts[sp + 1] = pos.y;
 		verts[sp + 2] = pos.z;
-		verts[sp + 3] = uv.x;
-		verts[sp + 4] = uv.y;
+		verts[sp + 3] = uv.x*4;
+		verts[sp + 4] = uv.y*4;
 		verts[sp + 5] = 1;
 		verts[sp + 6] = 1;
 		verts[sp + 7] = 1;

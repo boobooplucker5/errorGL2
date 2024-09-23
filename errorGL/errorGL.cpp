@@ -1,22 +1,27 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
-#include <cmath>
-#include <vector>
 #include "stb_image.h"
+
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <map>
+#include <cmath>
+#include <vector>
+
 #include "classes/shader.h"
 #include "classes/vec3.h"
 #include "classes/mesh.h"
+#include "classes/texture.h"
+#include "classes/drawobj.h"
+#include "classes/matt3.h"
+#include "classes/ui.h"
+
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
-#include "classes/matt3.h"
+
 #include <thread>
-#include "classes/texture.h"
-#include "classes/drawobj.h"
 #include <omp.h>
 #include <algorithm>
 #include <fstream>
@@ -26,13 +31,14 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #define STB_IMAGE_IMPLEMENTATION
+
 int drawcalls = 0;
 int drawinc = 0;
 vector<unsigned int> keyholds = {};
 //int keynums[] = { 87,65,83,68,81,69,82,84,70,71,32,340 };
 float camradx = 0;
 float camrady = 0;
-float t = 5;
+float t = 0;
 glm::vec3 campos = glm::vec3(0, 0, 0);
 glm::vec3 camfront = glm::vec3(0, 0, 1);
 glm::vec3 camup = glm::vec3(0, 1, 0);
@@ -296,7 +302,7 @@ int main()
     glm::mat4 viewmat = glm::lookAt(campos, campos + camfront, camup);
 
 
-    GLFWwindow* window = glfwCreateWindow(800, 800, " i always have the hardest bugs ;-;", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 800, "window", NULL, NULL);
 
 
     glfwMakeContextCurrent(window);
@@ -319,6 +325,7 @@ int main()
 
     glUseProgram(frameShader.program);
     glUniform1i(glGetUniformLocation(frameShader.program, "text"), 0);
+
 
 
     float vertices[] = {
@@ -444,7 +451,7 @@ int main()
         glUniform3f(glGetUniformLocation(defaultShader.program, "campos"), campos.x, campos.y, campos.z);
         booboo.transmat = { float(sin(t)),0,float(-cos(t)),0,1,0,float(cos(t)),0,float(sin(t)) };
 
-        drawobjects(draws, drawcalls);
+      //  drawobjects(draws, drawcalls);
 
 
 

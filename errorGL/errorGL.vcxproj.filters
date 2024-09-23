@@ -63,6 +63,7 @@
     <ClCompile Include="classes\drawobj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="shaders\guishaders.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -85,6 +86,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dependencies\include\imgui\imgui_widgets.cpp">
+=======
+    <ClCompile Include="classes\ui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders\uishader.cpp">
+>>>>>>> df5d0aa71e6885dad543075f327eba8825f6a43a
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -206,6 +213,7 @@
     <ClInclude Include="classes\drawobj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="dependencies\include\imgui\imconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -231,6 +239,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\include\imgui\imstb_truetype.h">
+=======
+    <ClInclude Include="classes\ui.h">
+>>>>>>> df5d0aa71e6885dad543075f327eba8825f6a43a
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -247,8 +258,9 @@
     <Text Include="meshes\spere.txt" />
     <Text Include="meshes\crash.txt" />
     <Text Include="meshes\gunno.txt" />
-    <Text Include="meshes\pyramid.txt" />
+    <Text Include="misc\miscy_stuff.txt" />
     <Text Include="meshes\hqsphere.txt" />
+    <Text Include="meshes\pyramid.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="meshes\sample.bin" />

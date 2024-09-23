@@ -29,5 +29,9 @@ void matt3::vertmult(float* verts, float* tverts, unsigned int vsize)
 		tverts[i+1] = verts[i] * m[3] + verts[i + 1] * m[4] + verts[i + 2] * m[5];
 		tverts[i+2] = verts[i] * m[6] + verts[i + 1] * m[7] + verts[i + 2] * m[8];
 
+		tverts[i+5] = verts[i+5] * m[0] + verts[i+6] * m[1] + verts[i+7] * m[2];
+		tverts[i+6] = verts[i+5] * m[3] + verts[i+6] * m[4] + verts[i+7] * m[5];
+		tverts[i+7] = verts[i+5] * m[6] + verts[i+6] * m[7] + verts[i+7] * m[8];
+
 	}
 }

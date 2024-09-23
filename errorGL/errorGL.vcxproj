@@ -165,8 +165,8 @@
     <ClCompile Include="classes\matt3.cpp" />
     <ClCompile Include="shaders\defaultshaders.cpp" />
     <ClCompile Include="shaders\frameshaders.cpp" />
-    <ClCompile Include="shaders\guishaders.cpp" />
     <ClCompile Include="stb.cpp" />
+    <ClCompile Include="classes\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\ebo.h" />
@@ -217,6 +217,7 @@
     <ClInclude Include="dependencies\include\stb_image.h" />
     <ClInclude Include="classes\matt3.h" />
     <ClInclude Include="classes\drawobj.h" />
+    <ClInclude Include="classes\ui.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\glfw3.lib" />
@@ -233,6 +234,7 @@
     <Text Include="meshes\spere.txt" />
     <Text Include="meshes\terrain.txt" />
     <Text Include="bruh.txt" />
+    <Text Include="misc\miscy_stuff.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="meshes\crash.bin" />
