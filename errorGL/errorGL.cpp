@@ -18,15 +18,18 @@
 #include "classes/texture.h"
 #include "classes/drawobj.h"
 #include <omp.h>
+#include <algorithm>
 #include <fstream>
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 #define STB_IMAGE_IMPLEMENTATION
 int drawcalls = 0;
 int drawinc = 0;
-float camx = 0;
-float camy = 0;
-float camz = 0;
-int keyholds[] = { 0,0,0,0,0,0,0,0,0,0,0,0 };
-int keynums[] = { 87,65,83,68,81,69,82,84,70,71,32,340 };
+vector<unsigned int> keyholds = {};
+//int keynums[] = { 87,65,83,68,81,69,82,84,70,71,32,340 };
 float camradx = 0;
 float camrady = 0;
 float t = 5;
@@ -34,7 +37,7 @@ glm::vec3 campos = glm::vec3(0, 0, 0);
 glm::vec3 camfront = glm::vec3(0, 0, 1);
 glm::vec3 camup = glm::vec3(0, 1, 0);
 glm::vec3 camright = glm::vec3(1, 0, 0);
-float inc = 100;
+float inc = 1;
 int mouseholdr = 0;
 double xpos = 800;
 double ypos = 800;
@@ -47,12 +50,12 @@ extern const char* frag;
 extern const char* fvertex;
 extern const char* ffrag;
 
-unsigned int* draws = new unsigned int[256];
+unsigned int* draws = new unsigned int[32176];
 drawobj makedrawobj(float* vertices, unsigned int* indices, int svert, int sind)
 {
     drawobj obj;
-    glGenBuffers(1,&obj.vbo);
-    glGenVertexArrays(1,&obj.vao);
+    glGenBuffers(1, &obj.vbo);
+    glGenVertexArrays(1, &obj.vao);
     glGenBuffers(1, &obj.ebo);
     glBindVertexArray(obj.vao);
     glBindBuffer(GL_ARRAY_BUFFER, obj.vbo);
@@ -116,31 +119,24 @@ void move(int key)
 }
 void ifpressed(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (action == GLFW_PRESS)
-    {
-        //  cout << key << "\n";
-        for (int i = 0; i < sizeof(keynums) / 4; i++)
-        {
-            if (key == keynums[i])
-            {
-                keyholds[i] = 1;
-            }
-        }
 
-    }
-
-    if (action == GLFW_RELEASE)
+    if (find(keyholds.begin(), keyholds.end(), key) != keyholds.end())
     {
 
-        for (int i = 0; i < sizeof(keynums) / 4; i++)
+        if (action == GLFW_RELEASE)
         {
-            if (key == keynums[i])
-            {
-                keyholds[i] = 0;
-            }
+            keyholds.erase(find(keyholds.begin(), keyholds.end(), key));
         }
-
     }
+    else
+    {
+        if (action == GLFW_PRESS)
+        {
+
+            keyholds.push_back(key);
+        }
+    }
+
 }
 void ifclicked(GLFWwindow* window, int button, int action, int mods)
 {
@@ -215,15 +211,11 @@ void ifs(GLFWwindow* window)
         camrady = 1.57;
     }
 };
-void keystuff()
+void keystuff(int key)
 {
-    for (int i = 0; i < sizeof(keynums) / 4; i++)
+    if (key == 87 | key == 65 | key == 83 | key == 68)
     {
-        if (keyholds[i] == 1)
-        {
-
-            move(keynums[i]);
-        }
+        move(key);
     }
 
 };
@@ -247,7 +239,7 @@ void renderobjects(unsigned int* buffarray, unsigned int rendercalls, float** to
 
 
 
-      
+
         mat.vertmult(totalverts[i * 2], totalverts[i * 2 + 1], buffarray[i * 3 + 2] / 4);
         glBindVertexArray(buffarray[i * 3]);
         glBindBuffer(GL_ARRAY_BUFFER, buffarray[i * 3 + 1]);
@@ -275,28 +267,23 @@ void addrender(unsigned int* buffarr, unsigned int& inc, unsigned int vao, unsig
     inc += 3;
 }
 
+using namespace ImGui;
 int main()
 {
-
+    
     glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
     mesh booboo2;
     mesh booboo;
     double start = omp_get_wtime();
 
-//   booboo.objload("meshes/pyramid.txt");
-  // booboo.objload("meshes/hqsphere.txt");
-    //booboo.convert("meshes/spere.bin");
-    booboo.load("meshes/spere.bin");
-    for (int i = 0; i < booboo.tvsize / 4; i += 8)
-    {
-       booboo.verts[i] /= 0.0100;
-        booboo.verts[i + 1] /= 0.0100;
-       booboo.verts[i + 2] /= 0.0100;
-    }
+    booboo.objload("meshes/cubi.txt");
+    // booboo.objload("meshes/hqsphere.txt");
+      //booboo.convert("meshes/spere.bin");as
+  //booboo.load("meshes/sample.bin");
 
-    //  booboo2.objload("meshes/crash.txt");
-     // booboo2.convert("meshes/crash.bin");
-    //booboo2.load("meshes/crash.bin");
+  //  booboo2.objload("meshes/crash.txt");
+   // booboo2.convert("meshes/crash.bin");
+  //booboo2.load("meshes/crash.bin");
     double finish = omp_get_wtime();
     cout << finish - start << "\n";
     glfwInit();
@@ -312,12 +299,17 @@ int main()
     GLFWwindow* window = glfwCreateWindow(800, 800, " i always have the hardest bugs ;-;", NULL, NULL);
 
 
-
     glfwMakeContextCurrent(window);
     gladLoadGL();
     glfwSetKeyCallback(window, ifpressed);
     glfwSetMouseButtonCallback(window, ifclicked);
 
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& inout = GetIO();
+    StyleColorsDark();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 430");
 
 
     shader defaultShader;
@@ -342,15 +334,15 @@ int main()
     unsigned int indices[] = {
         1, 0, 3,
         1, 2, 3
-    }; 
+    };
 
-   // unsigned int svbo, svao, sebo;
+    // unsigned int svbo, svao, sebo;
 
-    drawobj sobj =  makedrawobj(vertices, indices, 144, 24);
-  //  unsigned int vbo, vao, ebo;
+    drawobj sobj = makedrawobj(vertices, indices, 144, 24);
+    //  unsigned int vbo, vao, ebo;
     drawobj obj = makedrawobj(booboo.verts, booboo.index, booboo.tvsize, booboo.tisize);
-   // unsigned int vbo2, vao2, ebo2;
-    //makedrawobj(booboo2.verts, booboo2.index, booboo2.tvsize, booboo2.tisize, vbo2, vao2, ebo2);
+    // unsigned int vbo2, vao2, ebo2;
+     //makedrawobj(booboo2.verts, booboo2.index, booboo2.tvsize, booboo2.tisize, vbo2, vao2, ebo2);
 
 
     texture text("Textures/white.png");
@@ -378,10 +370,6 @@ int main()
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, 800, 800);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
 
-    matt3 tran;
-    tran.empty();
-
-
 
 
     float s = 0.0f;
@@ -393,38 +381,47 @@ int main()
     glCullFace(GL_BACK);
 
     adddraw(obj.vao, booboo.tisize, text.id);
-   // adddraw(vao2, booboo2.tisize, text.id);
+    // adddraw(vao2, booboo2.tisize, text.id);
     while (!glfwWindowShouldClose(window))
     {
 
+       ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+       NewFrame();
+
+        Begin("my fisrt window!1!");
+        Text("ayo pAUSe!");
+        End();
+
         t += 0.001;
-        matt3 rotmatx = { sin(t),0,-cos(t),0,1,0,cos(t),0,sin(t) };
-        unsigned int rendersize = (booboo.tisize) / 4;
+        //keyholds.clear();
+        for (int i = 0; i < keyholds.size(); i++)
+        {
+            keystuff(keyholds[i]);
+        }
+
+        unsigned int rendersize;
         unsigned int* buffarray2 = new unsigned int[drawcalls * 3];
         unsigned int renderinc = 0;
         float** renders = new float* [4];
 
         addrender(buffarray2, renderinc, obj.vao, obj.vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
-        //addrender(buffarray2, renderinc, vao2, vbo2, booboo2.tvsize, renders, booboo2.verts, booboo2.tverts);
-        //
+
         camfront.x = cos(camradx) * cos(camrady);
         camfront.y = sin(camrady);
         camfront.z = sin(camradx) * cos(camrady);
+
         camfront = normalize(camfront);
         camright = normalize(cross(glm::vec3(0, 1, 0), camfront));
         camup = normalize(cross(camfront, camright));
+
         viewmat = lookAt(campos, campos + camfront, camup);
 
         ifs(window);
-        keystuff();
 
 
 
-        //   drawinc+=3;
-          // draws[drawinc] = vao2;
-         //  draws[drawinc+1] = booboo2.tisize / 4;
-        //   draws[drawinc+2] = text.id;
-        //   drawinc+=3;
+
         glUniform1f(tlocation, 1 * 0.00125);
 
 
@@ -435,7 +432,7 @@ int main()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        transmat = glm::translate(glm::mat4(1.0f), glm::vec3(camx, camy, camz));
+        transmat = glm::translate(glm::mat4(1.0f), campos);
 
         glUseProgram(defaultShader.program);
 
@@ -450,17 +447,9 @@ int main()
         drawobjects(draws, drawcalls);
 
 
-        //renderobjects(buffarray2, 1, renders,booboo.transmat);
-        //   glBindVertexArray(vao);
-        //  glBindBuffer(GL_ARRAY_BUFFER, vbo);
-         //glBufferData(GL_ARRAY_BUFFER, booboo.tvsize, booboo.verts, GL_STATIC_DRAW);
-          //glBindBuffer(GL_ARRAY_BUFFER, 0);
-          //glBindVertexArray(vao2);
-         // glBindBuffer(GL_ARRAY_BUFFER, vbo2);
-          //glBufferData(GL_ARRAY_BUFFER, booboo2.tvsize, booboo2.verts, GL_STATIC_DRAW);
-          //glBindBuffer(GL_ARRAY_BUFFER, 0);
+
         glBindTexture(GL_TEXTURE_2D, text.id);
-        // glDrawElements(GL_TRIANGLES, booboo.tisize/4, GL_UNSIGNED_INT, 0);
+      
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
@@ -478,14 +467,18 @@ int main()
 
         pxpos = xpos;
         pypos = ypos;
-
+        Render();
+        ImGui_ImplOpenGL3_RenderDrawData(GetDrawData());
         glfwSwapBuffers(window);
         glfwPollEvents();
+
     }
 
 
 
-
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    DestroyContext();
     glfwTerminate();
 
 

@@ -43,15 +43,15 @@ const char* frag =
 
 "void main()"
 "{"
-"float lightpower = 100;"
-"vec3 lightdirection = normalize(vec3(1000,1000,1000) - fragpos);"
-"float distance = length(vec3(1000,1000,1000) - fragpos);"
-"float diffuse = max(dot(lightdirection,normal),0) / (distance/30/lightpower);"
+"float lightpower = 15;"
+"vec3 lightdirection = normalize(vec3(3,3,3) - fragpos);"
+"float distance = length(vec3(3,3,3) - fragpos);"
+"float diffuse = max(dot(lightdirection,normal),0) / (distance/(lightpower/5));"
 
 "vec3 viewdirection = normalize(campos - fragpos);"
 "vec3 reflectdirection = reflect(-lightdirection,normal);"
-"vec3 lightcolor = vec3(0,1,0);"
-"float specular = pow(max(dot(viewdirection,reflectdirection),0),max(distance/ (lightpower*100) ,1));"
+"vec3 lightcolor = vec3(1,0,0);"
+"float specular = pow(max(dot(viewdirection,reflectdirection),0),2)*(lightpower/distance/10);"
 "vec3 light = vec3( (diffuse + specular)*lightcolor.x,(diffuse + specular)*lightcolor.y,(diffuse + specular)*lightcolor.z);"
 "fragcolor = texture2D(text, textcord)*vec4(color.x+0.2,color.y+0.2,color.z+0.2,1)+vec4(light,1);"
 

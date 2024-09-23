@@ -20,6 +20,7 @@ texture::texture(const char* directory)
     int width, height, nrChannels;
 
     unsigned char* data = stbi_load(directory, &width, &height, &nrChannels, 0);
+
     if (stbi_failure_reason())
     {
         cout << stbi_failure_reason() << "\n";

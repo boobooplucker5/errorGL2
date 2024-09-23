@@ -153,11 +153,19 @@
     <ClCompile Include="classes\vec3.cpp" />
     <ClCompile Include="dependencies\include\glm\glm.cppm" />
     <ClCompile Include="classes\drawobj.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_widgets.cpp" />
     <ClCompile Include="errorGL.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="classes\matt3.cpp" />
     <ClCompile Include="shaders\defaultshaders.cpp" />
     <ClCompile Include="shaders\frameshaders.cpp" />
+    <ClCompile Include="shaders\guishaders.cpp" />
     <ClCompile Include="stb.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +203,15 @@
     <ClInclude Include="dependencies\include\glm\vec3.hpp" />
     <ClInclude Include="dependencies\include\glm\vec4.hpp" />
     <ClInclude Include="dependencies\include\glm\vector_relational.hpp" />
+    <ClInclude Include="dependencies\include\imgui\imconfig.h" />
+    <ClInclude Include="dependencies\include\imgui\imgui.h" />
+    <ClInclude Include="dependencies\include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="dependencies\include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="dependencies\include\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="dependencies\include\imgui\imgui_internal.h" />
+    <ClInclude Include="dependencies\include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="dependencies\include\imgui\imstb_textedit.h" />
+    <ClInclude Include="dependencies\include\imgui\imstb_truetype.h" />
     <ClInclude Include="dependencies\include\json.h" />
     <ClInclude Include="dependencies\include\KHR\khrplatform.h" />
     <ClInclude Include="dependencies\include\stb_image.h" />
@@ -221,7 +238,6 @@
     <None Include="meshes\crash.bin" />
     <None Include="meshes\sample.bin" />
     <None Include="meshes\spere.bin" />
-    <None Include="shaders\fvertex.glsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\garss.png" />
@@ -231,6 +247,14 @@
     <Image Include="Textures\scrap.png" />
     <Image Include="Textures\white.png" />
     <Image Include="Textures\whyyyyyGL -  Microsoft Visual Studio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="x64\Debug\imgui.obj" />
+    <Object Include="x64\Debug\imgui_demo.obj" />
+    <Object Include="x64\Debug\imgui_draw.obj" />
+    <Object Include="x64\Debug\imgui_impl_glfw.obj" />
+    <Object Include="x64\Debug\imgui_tables.obj" />
+    <Object Include="x64\Debug\imgui_widgets.obj" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
