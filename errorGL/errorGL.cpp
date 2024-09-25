@@ -474,7 +474,7 @@ int main()
         glUniform3f(glGetUniformLocation(defaultShader.program, "campos"), campos.x, campos.y, campos.z);
 
 
-        drawobjects(draws, drawcalls);
+      //  drawobjects(draws, drawcalls);
 
 
 
