@@ -20,7 +20,7 @@ const char* vertex =
 "gl_Position = projmat*viewmat*vec4(pos,1);"
 
 "textcord = uv;"
-"color = vec3(0.2,0.2,0.2);"
+"color = vec3(0,0,0);"
 "fragpos = pos;"
 "normal = norm;"
 

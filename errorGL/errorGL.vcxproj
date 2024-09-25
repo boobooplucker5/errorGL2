@@ -167,6 +167,7 @@
     <ClCompile Include="shaders\frameshaders.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="classes\ui.cpp" />
+    <ClCompile Include="classes\character.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\ebo.h" />
@@ -177,6 +178,52 @@
     <ClInclude Include="classes\vbo.h" />
     <ClInclude Include="classes\vec2.h" />
     <ClInclude Include="classes\vec3.h" />
+    <ClInclude Include="dependencies\include\freetype\freetype.h" />
+    <ClInclude Include="dependencies\include\freetype\ftadvanc.h" />
+    <ClInclude Include="dependencies\include\freetype\ftautoh.h" />
+    <ClInclude Include="dependencies\include\freetype\ftbbox.h" />
+    <ClInclude Include="dependencies\include\freetype\ftbdf.h" />
+    <ClInclude Include="dependencies\include\freetype\ftbitmap.h" />
+    <ClInclude Include="dependencies\include\freetype\ftbzip2.h" />
+    <ClInclude Include="dependencies\include\freetype\ftcache.h" />
+    <ClInclude Include="dependencies\include\freetype\ftcffdrv.h" />
+    <ClInclude Include="dependencies\include\freetype\ftchapters.h" />
+    <ClInclude Include="dependencies\include\freetype\ftcid.h" />
+    <ClInclude Include="dependencies\include\freetype\fterrdef.h" />
+    <ClInclude Include="dependencies\include\freetype\fterrors.h" />
+    <ClInclude Include="dependencies\include\freetype\ftfntfmt.h" />
+    <ClInclude Include="dependencies\include\freetype\ftgasp.h" />
+    <ClInclude Include="dependencies\include\freetype\ftglyph.h" />
+    <ClInclude Include="dependencies\include\freetype\ftgxval.h" />
+    <ClInclude Include="dependencies\include\freetype\ftgzip.h" />
+    <ClInclude Include="dependencies\include\freetype\ftimage.h" />
+    <ClInclude Include="dependencies\include\freetype\ftincrem.h" />
+    <ClInclude Include="dependencies\include\freetype\ftlcdfil.h" />
+    <ClInclude Include="dependencies\include\freetype\ftlist.h" />
+    <ClInclude Include="dependencies\include\freetype\ftlzw.h" />
+    <ClInclude Include="dependencies\include\freetype\ftmac.h" />
+    <ClInclude Include="dependencies\include\freetype\ftmm.h" />
+    <ClInclude Include="dependencies\include\freetype\ftmodapi.h" />
+    <ClInclude Include="dependencies\include\freetype\ftmoderr.h" />
+    <ClInclude Include="dependencies\include\freetype\ftotval.h" />
+    <ClInclude Include="dependencies\include\freetype\ftoutln.h" />
+    <ClInclude Include="dependencies\include\freetype\ftpfr.h" />
+    <ClInclude Include="dependencies\include\freetype\ftrender.h" />
+    <ClInclude Include="dependencies\include\freetype\ftsizes.h" />
+    <ClInclude Include="dependencies\include\freetype\ftsnames.h" />
+    <ClInclude Include="dependencies\include\freetype\ftstroke.h" />
+    <ClInclude Include="dependencies\include\freetype\ftsynth.h" />
+    <ClInclude Include="dependencies\include\freetype\ftsystem.h" />
+    <ClInclude Include="dependencies\include\freetype\fttrigon.h" />
+    <ClInclude Include="dependencies\include\freetype\ftttdrv.h" />
+    <ClInclude Include="dependencies\include\freetype\fttypes.h" />
+    <ClInclude Include="dependencies\include\freetype\ftwinfnt.h" />
+    <ClInclude Include="dependencies\include\freetype\t1tables.h" />
+    <ClInclude Include="dependencies\include\freetype\ttnameid.h" />
+    <ClInclude Include="dependencies\include\freetype\tttables.h" />
+    <ClInclude Include="dependencies\include\freetype\tttags.h" />
+    <ClInclude Include="dependencies\include\freetype\ttunpat.h" />
+    <ClInclude Include="dependencies\include\ft2build.h" />
     <ClInclude Include="dependencies\include\glad\glad.h" />
     <ClInclude Include="dependencies\include\GLFW\glfw3.h" />
     <ClInclude Include="dependencies\include\GLFW\glfw3native.h" />
@@ -218,8 +265,10 @@
     <ClInclude Include="classes\matt3.h" />
     <ClInclude Include="classes\drawobj.h" />
     <ClInclude Include="classes\ui.h" />
+    <ClInclude Include="classes\character.h" />
   </ItemGroup>
   <ItemGroup>
+    <Library Include="dependencies\lib\freetype.lib" />
     <Library Include="dependencies\lib\glfw3.lib" />
   </ItemGroup>
   <ItemGroup>
@@ -257,6 +306,9 @@
     <Object Include="x64\Debug\imgui_impl_glfw.obj" />
     <Object Include="x64\Debug\imgui_tables.obj" />
     <Object Include="x64\Debug\imgui_widgets.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\comicsans.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

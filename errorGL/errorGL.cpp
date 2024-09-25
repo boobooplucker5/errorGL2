@@ -30,6 +30,9 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+
+#include "ft2build.h"
+#include FT_FREETYPE_H
 #define STB_IMAGE_IMPLEMENTATION
 
 int drawcalls = 0;
@@ -168,7 +171,6 @@ void ifclicked(GLFWwindow* window, int button, int action, int mods)
         break;
     }
 }
-
 void ifs(GLFWwindow* window)
 {
     glfwGetCursorPos(window, &xpos, &ypos);
@@ -280,6 +282,27 @@ int main()
     glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
     mesh booboo2;
     mesh booboo;
+
+    FT_Library ft;
+    FT_Face face;
+
+    if (FT_Init_FreeType(&ft))
+    {
+        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
+        return -1;
+    }
+    if (FT_New_Face(ft, "fonts/comicsans.ttf", 0, &face))
+    {
+        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
+        return -1;
+    }
+
+    FT_Set_Pixel_Sizes(face, 0, 48);
+    if (FT_Load_Char(face, 'f', FT_LOAD_RENDER))
+    {
+        std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+        return -1;
+    }
     double start = omp_get_wtime();
 
     booboo.objload("meshes/cubi.txt");
@@ -297,7 +320,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    glm::mat4 projmat = glm::perspective(glm::radians(120.0f), 1.0f, 0.001f, 1000.0f);
+    glm::mat4 projmat = glm::perspective(glm::radians(90.0f), 1.0f, 0.001f, 1000.0f);
     glm::mat4 transmat = glm::translate(glm::mat4(1.0f), glm::vec3(0, -20, 0));
     glm::mat4 viewmat = glm::lookAt(campos, campos + camfront, camup);
 
@@ -396,9 +419,9 @@ int main()
         ImGui_ImplGlfw_NewFrame();
        NewFrame();
 
-        Begin("my fisrt window!1!");
-        Text("ayo pAUSe!");
-        End();
+      Begin("my fisrt window!1!");
+      Text("ayo pAUSe!");
+       End();
 
         t += 0.001;
         //keyholds.clear();
@@ -449,9 +472,9 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "projmat"), 1, GL_FALSE, &projmat[0][0]);
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "viewmat"), 1, GL_FALSE, &viewmat[0][0]);
         glUniform3f(glGetUniformLocation(defaultShader.program, "campos"), campos.x, campos.y, campos.z);
-        booboo.transmat = { float(sin(t)),0,float(-cos(t)),0,1,0,float(cos(t)),0,float(sin(t)) };
 
-      //  drawobjects(draws, drawcalls);
+
+        drawobjects(draws, drawcalls);
 
 
 
@@ -483,7 +506,7 @@ int main()
 
 
 
-    ImGui_ImplOpenGL3_Shutdown();
+   ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     DestroyContext();
     glfwTerminate();

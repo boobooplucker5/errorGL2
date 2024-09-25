@@ -1,305 +1,171 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="errorGL.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stb.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="shaders\defaultshaders.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="shaders\frameshaders.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\ebo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\vao.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\vbo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\vec2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\vec3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\include\glm\glm.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="glad.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\matt3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="classes\drawobj.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="shaders\guishaders.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\include\imgui\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\include\imgui\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\include\imgui\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\include\imgui\imgui_impl_glfw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\include\imgui\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\include\imgui\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="dependencies\include\imgui\imgui_widgets.cpp">
-=======
-    <ClCompile Include="classes\ui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="shaders\uishader.cpp">
->>>>>>> df5d0aa71e6885dad543075f327eba8825f6a43a
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="dependencies\include\GLFW\glfw3native.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\GLFW\glfw3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glad\glad.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\KHR\khrplatform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\stb_image.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\ebo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\vao.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\vbo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\vec2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\vec3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\common.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\exponential.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\ext.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\fwd.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\geometric.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\glm.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\integer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\mat2x2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\mat2x3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\mat2x4.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\mat3x2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\mat3x3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\mat3x4.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\mat4x2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\mat4x3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\mat4x4.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\matrix.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\packing.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\trigonometric.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\vec2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\vec3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\vec4.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\glm\vector_relational.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\json.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\matt3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="classes\drawobj.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="dependencies\include\imgui\imconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\imgui\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\imgui\imgui_impl_glfw.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\imgui\imgui_impl_opengl3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\imgui\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\imgui\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\imgui\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\imgui\imstb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dependencies\include\imgui\imstb_truetype.h">
-=======
-    <ClInclude Include="classes\ui.h">
->>>>>>> df5d0aa71e6885dad543075f327eba8825f6a43a
-      <Filter>Header Files</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="dependencies\lib\glfw3.lib" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="meshes\cubee.txt" />
-    <Text Include="meshes\cubi.txt" />
-    <Text Include="meshes\terrain.txt" />
-    <Text Include="dependencies\include\glm\CMakeLists.txt" />
-    <Text Include="dependencies\include\glm\copying.txt" />
-    <Text Include="bruh.txt" />
-    <Text Include="meshes\spere.txt" />
-    <Text Include="meshes\crash.txt" />
-    <Text Include="meshes\gunno.txt" />
-    <Text Include="misc\miscy_stuff.txt" />
-    <Text Include="meshes\hqsphere.txt" />
-    <Text Include="meshes\pyramid.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="meshes\sample.bin" />
-    <None Include="meshes\crash.bin">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="meshes\spere.bin">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="Textures\garss.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Textures\pipoucrisp.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Textures\powpow.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Textures\scrap.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Textures\white.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Textures\whyyyyyGL -  Microsoft Visual Studio.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Textures\NULL.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <Object Include="x64\Debug\imgui.obj" />
     <Object Include="x64\Debug\imgui_demo.obj" />
     <Object Include="x64\Debug\imgui_draw.obj" />
+    <Object Include="x64\Debug\imgui_impl_glfw.obj" />
     <Object Include="x64\Debug\imgui_tables.obj" />
     <Object Include="x64\Debug\imgui_widgets.obj" />
-    <Object Include="x64\Debug\imgui_impl_glfw.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="classes\ebo.cpp" />
+    <ClCompile Include="classes\mesh.cpp" />
+    <ClCompile Include="classes\shader.cpp" />
+    <ClCompile Include="classes\texture.cpp" />
+    <ClCompile Include="classes\vao.cpp" />
+    <ClCompile Include="classes\vbo.cpp" />
+    <ClCompile Include="classes\vec2.cpp" />
+    <ClCompile Include="classes\vec3.cpp" />
+    <ClCompile Include="dependencies\include\glm\glm.cppm" />
+    <ClCompile Include="classes\drawobj.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_demo.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_draw.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_tables.cpp" />
+    <ClCompile Include="dependencies\include\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="errorGL.cpp" />
+    <ClCompile Include="glad.c" />
+    <ClCompile Include="classes\matt3.cpp" />
+    <ClCompile Include="shaders\defaultshaders.cpp" />
+    <ClCompile Include="shaders\frameshaders.cpp" />
+    <ClCompile Include="stb.cpp" />
+    <ClCompile Include="classes\ui.cpp" />
+    <ClCompile Include="classes\character.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="classes\ebo.h" />
+    <ClInclude Include="classes\mesh.h" />
+    <ClInclude Include="classes\shader.h" />
+    <ClInclude Include="classes\texture.h" />
+    <ClInclude Include="classes\vao.h" />
+    <ClInclude Include="classes\vbo.h" />
+    <ClInclude Include="classes\vec2.h" />
+    <ClInclude Include="classes\vec3.h" />
+    <ClInclude Include="dependencies\include\glad\glad.h" />
+    <ClInclude Include="dependencies\include\GLFW\glfw3.h" />
+    <ClInclude Include="dependencies\include\GLFW\glfw3native.h" />
+    <ClInclude Include="dependencies\include\glm\common.hpp" />
+    <ClInclude Include="dependencies\include\glm\exponential.hpp" />
+    <ClInclude Include="dependencies\include\glm\ext.hpp" />
+    <ClInclude Include="dependencies\include\glm\fwd.hpp" />
+    <ClInclude Include="dependencies\include\glm\geometric.hpp" />
+    <ClInclude Include="dependencies\include\glm\glm.hpp" />
+    <ClInclude Include="dependencies\include\glm\integer.hpp" />
+    <ClInclude Include="dependencies\include\glm\mat2x2.hpp" />
+    <ClInclude Include="dependencies\include\glm\mat2x3.hpp" />
+    <ClInclude Include="dependencies\include\glm\mat2x4.hpp" />
+    <ClInclude Include="dependencies\include\glm\mat3x2.hpp" />
+    <ClInclude Include="dependencies\include\glm\mat3x3.hpp" />
+    <ClInclude Include="dependencies\include\glm\mat3x4.hpp" />
+    <ClInclude Include="dependencies\include\glm\mat4x2.hpp" />
+    <ClInclude Include="dependencies\include\glm\mat4x3.hpp" />
+    <ClInclude Include="dependencies\include\glm\mat4x4.hpp" />
+    <ClInclude Include="dependencies\include\glm\matrix.hpp" />
+    <ClInclude Include="dependencies\include\glm\packing.hpp" />
+    <ClInclude Include="dependencies\include\glm\trigonometric.hpp" />
+    <ClInclude Include="dependencies\include\glm\vec2.hpp" />
+    <ClInclude Include="dependencies\include\glm\vec3.hpp" />
+    <ClInclude Include="dependencies\include\glm\vec4.hpp" />
+    <ClInclude Include="dependencies\include\glm\vector_relational.hpp" />
+    <ClInclude Include="dependencies\include\imgui\imconfig.h" />
+    <ClInclude Include="dependencies\include\imgui\imgui.h" />
+    <ClInclude Include="dependencies\include\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="dependencies\include\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="dependencies\include\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="dependencies\include\imgui\imgui_internal.h" />
+    <ClInclude Include="dependencies\include\imgui\imstb_rectpack.h" />
+    <ClInclude Include="dependencies\include\imgui\imstb_textedit.h" />
+    <ClInclude Include="dependencies\include\imgui\imstb_truetype.h" />
+    <ClInclude Include="dependencies\include\json.h" />
+    <ClInclude Include="dependencies\include\KHR\khrplatform.h" />
+    <ClInclude Include="dependencies\include\stb_image.h" />
+    <ClInclude Include="classes\matt3.h" />
+    <ClInclude Include="classes\drawobj.h" />
+    <ClInclude Include="classes\ui.h" />
+    <ClInclude Include="dependencies\include\ft2build.h" />
+    <ClInclude Include="dependencies\include\freetype\freetype.h" />
+    <ClInclude Include="dependencies\include\freetype\ftadvanc.h" />
+    <ClInclude Include="dependencies\include\freetype\ftautoh.h" />
+    <ClInclude Include="dependencies\include\freetype\ftbbox.h" />
+    <ClInclude Include="dependencies\include\freetype\ftbdf.h" />
+    <ClInclude Include="dependencies\include\freetype\ftbitmap.h" />
+    <ClInclude Include="dependencies\include\freetype\ftbzip2.h" />
+    <ClInclude Include="dependencies\include\freetype\ftcache.h" />
+    <ClInclude Include="dependencies\include\freetype\ftcffdrv.h" />
+    <ClInclude Include="dependencies\include\freetype\ftchapters.h" />
+    <ClInclude Include="dependencies\include\freetype\ftcid.h" />
+    <ClInclude Include="dependencies\include\freetype\fterrdef.h" />
+    <ClInclude Include="dependencies\include\freetype\fterrors.h" />
+    <ClInclude Include="dependencies\include\freetype\ftfntfmt.h" />
+    <ClInclude Include="dependencies\include\freetype\ftgasp.h" />
+    <ClInclude Include="dependencies\include\freetype\ftglyph.h" />
+    <ClInclude Include="dependencies\include\freetype\ftgxval.h" />
+    <ClInclude Include="dependencies\include\freetype\ftgzip.h" />
+    <ClInclude Include="dependencies\include\freetype\ftimage.h" />
+    <ClInclude Include="dependencies\include\freetype\ftincrem.h" />
+    <ClInclude Include="dependencies\include\freetype\ftlcdfil.h" />
+    <ClInclude Include="dependencies\include\freetype\ftlist.h" />
+    <ClInclude Include="dependencies\include\freetype\ftlzw.h" />
+    <ClInclude Include="dependencies\include\freetype\ftmac.h" />
+    <ClInclude Include="dependencies\include\freetype\ftmm.h" />
+    <ClInclude Include="dependencies\include\freetype\ftmodapi.h" />
+    <ClInclude Include="dependencies\include\freetype\ftmoderr.h" />
+    <ClInclude Include="dependencies\include\freetype\ftotval.h" />
+    <ClInclude Include="dependencies\include\freetype\ftoutln.h" />
+    <ClInclude Include="dependencies\include\freetype\ftpfr.h" />
+    <ClInclude Include="dependencies\include\freetype\ftrender.h" />
+    <ClInclude Include="dependencies\include\freetype\ftsizes.h" />
+    <ClInclude Include="dependencies\include\freetype\ftsnames.h" />
+    <ClInclude Include="dependencies\include\freetype\ftstroke.h" />
+    <ClInclude Include="dependencies\include\freetype\ftsynth.h" />
+    <ClInclude Include="dependencies\include\freetype\ftsystem.h" />
+    <ClInclude Include="dependencies\include\freetype\fttrigon.h" />
+    <ClInclude Include="dependencies\include\freetype\ftttdrv.h" />
+    <ClInclude Include="dependencies\include\freetype\fttypes.h" />
+    <ClInclude Include="dependencies\include\freetype\ftwinfnt.h" />
+    <ClInclude Include="dependencies\include\freetype\t1tables.h" />
+    <ClInclude Include="dependencies\include\freetype\ttnameid.h" />
+    <ClInclude Include="dependencies\include\freetype\tttables.h" />
+    <ClInclude Include="dependencies\include\freetype\tttags.h" />
+    <ClInclude Include="dependencies\include\freetype\ttunpat.h" />
+    <ClInclude Include="classes\character.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="dependencies\lib\glfw3.lib" />
+    <Library Include="dependencies\lib\freetype.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Textures\garss.png" />
+    <Image Include="Textures\NULL.png" />
+    <Image Include="Textures\pipoucrisp.png" />
+    <Image Include="Textures\powpow.png" />
+    <Image Include="Textures\scrap.png" />
+    <Image Include="Textures\white.png" />
+    <Image Include="Textures\whyyyyyGL -  Microsoft Visual Studio.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="meshes\crash.bin" />
+    <None Include="meshes\sample.bin" />
+    <None Include="meshes\spere.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="dependencies\include\glm\CMakeLists.txt" />
+    <Text Include="dependencies\include\glm\copying.txt" />
+    <Text Include="meshes\crash.txt" />
+    <Text Include="meshes\cubee.txt" />
+    <Text Include="meshes\cubi.txt" />
+    <Text Include="meshes\gunno.txt" />
+    <Text Include="meshes\hqsphere.txt" />
+    <Text Include="meshes\pyramid.txt" />
+    <Text Include="meshes\spere.txt" />
+    <Text Include="meshes\terrain.txt" />
+    <Text Include="bruh.txt" />
+    <Text Include="misc\miscy_stuff.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\comicsans.ttf" />
   </ItemGroup>
 </Project>
