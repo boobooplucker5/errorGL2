@@ -2,9 +2,10 @@
 #include "vec2.h"
 class character
 {
-	unsigned glyphid;
+public:
+	unsigned int glyphid;
 	vec2 size;
 	vec2 bearing;
-
+	unsigned int advance;
 };
 

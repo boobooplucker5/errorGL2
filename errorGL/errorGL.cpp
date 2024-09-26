@@ -32,6 +32,8 @@
 
 
 #include "ft2build.h"
+#include "classes/character.h"
+
 #include FT_FREETYPE_H
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -278,7 +280,7 @@ void addrender(unsigned int* buffarr, unsigned int& inc, unsigned int vao, unsig
 using namespace ImGui;
 int main()
 {
-    
+
     glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
     mesh booboo2;
     mesh booboo;
@@ -303,6 +305,7 @@ int main()
         std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
         return -1;
     }
+
     double start = omp_get_wtime();
 
     booboo.objload("meshes/cubi.txt");
@@ -332,6 +335,41 @@ int main()
     gladLoadGL();
     glfwSetKeyCallback(window, ifpressed);
     glfwSetMouseButtonCallback(window, ifclicked);
+
+    for (unsigned char i = 0; i < 128; i++)
+    {
+        if (FT_Load_Char(face, i, FT_LOAD_RENDER))
+        {
+            std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+            continue;
+        }
+
+        unsigned int txt;
+        glGenTextures(1, &txt);
+         glBindTexture(GL_TEXTURE_2D, 0);
+               glBindTexture(GL_TEXTURE_2D, txt);
+        glTexImage2D(
+                GL_TEXTURE_2D,
+                0,
+                GL_RED,
+                face->glyph->bitmap.width,
+                face->glyph->bitmap.rows,
+                0,
+                GL_RED,
+                GL_UNSIGNED_BYTE,
+                face->glyph->bitmap.buffer
+            );
+               glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+               glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+               glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+               glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                    character chter;
+                    chter.glyphid = txt;
+                   chter.size = vec2(face->glyph->bitmap.width,face->glyph->bitmap.rows);
+                   chter.bearing = vec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
+                   chter.advance = face->glyph->advance.x;
+         
+    }
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -415,13 +453,10 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
 
-       ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
-       NewFrame();
+        NewFrame();
 
-      Begin("my fisrt window!1!");
-      Text("ayo pAUSe!");
-       End();
 
         t += 0.001;
         //keyholds.clear();
@@ -474,12 +509,12 @@ int main()
         glUniform3f(glGetUniformLocation(defaultShader.program, "campos"), campos.x, campos.y, campos.z);
 
 
-      //  drawobjects(draws, drawcalls);
+        drawobjects(draws, drawcalls);
 
 
 
         glBindTexture(GL_TEXTURE_2D, text.id);
-      
+
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDisable(GL_DEPTH_TEST);
         glDisable(GL_CULL_FACE);
@@ -506,7 +541,7 @@ int main()
 
 
 
-   ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     DestroyContext();
     glfwTerminate();
