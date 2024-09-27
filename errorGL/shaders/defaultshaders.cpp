@@ -30,6 +30,7 @@ const char* frag =
 "out vec4 fragcolor;"
 
 "uniform vec3 campos;"
+"uniform vec3 lightpos;"
 
 "in vec3 color;"
 "in vec2 textcord;"
@@ -44,8 +45,8 @@ const char* frag =
 "void main()"
 "{"
 "float lightpower = 15;"
-"vec3 lightdirection = normalize(vec3(3,3,3) - fragpos);"
-"float distance = length(vec3(3,3,3) - fragpos);"
+"vec3 lightdirection = normalize(lightpos - fragpos);"
+"float distance = length(lightpos - fragpos);"
 "float diffuse = max(dot(lightdirection,normal),0) / (distance/(lightpower/5));"
 
 "vec3 viewdirection = normalize(campos - fragpos);"

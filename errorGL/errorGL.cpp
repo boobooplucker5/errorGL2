@@ -16,7 +16,7 @@
 #include "classes/drawobj.h"
 #include "classes/matt3.h"
 #include "classes/ui.h"
-
+#include "classes/text.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -48,6 +48,10 @@ glm::vec3 campos = glm::vec3(0, 0, 0);
 glm::vec3 camfront = glm::vec3(0, 0, 1);
 glm::vec3 camup = glm::vec3(0, 1, 0);
 glm::vec3 camright = glm::vec3(1, 0, 0);
+glm::mat4 projmat;
+glm::mat4 transmat;
+glm::mat4 viewmat;
+
 float inc = 1;
 int mouseholdr = 0;
 double xpos = 800;
@@ -276,7 +280,22 @@ void addrender(unsigned int* buffarr, unsigned int& inc, unsigned int vao, unsig
     buffarr[inc + 2] = vsize;
     inc += 3;
 }
+void cameramanage()
+{
 
+    camfront.x = cos(camradx) * cos(camrady);
+    camfront.y = sin(camrady);
+    camfront.z = sin(camradx) * cos(camrady);
+
+    camfront = normalize(camfront);
+    camright = normalize(cross(glm::vec3(0, 1, 0), camfront));
+    camup = normalize(cross(camfront, camright));
+
+    viewmat = lookAt(campos, campos + camfront, camup);
+    projmat = glm::perspective(glm::radians(90.0f), 1.0f, 0.001f, 1000.0f);
+    viewmat = glm::lookAt(campos, campos + camfront, camup);
+    transmat = glm::translate(glm::mat4(1.0f), campos);
+}
 using namespace ImGui;
 int main()
 {
@@ -323,9 +342,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    glm::mat4 projmat = glm::perspective(glm::radians(90.0f), 1.0f, 0.001f, 1000.0f);
-    glm::mat4 transmat = glm::translate(glm::mat4(1.0f), glm::vec3(0, -20, 0));
-    glm::mat4 viewmat = glm::lookAt(campos, campos + camfront, camup);
+
 
 
     GLFWwindow* window = glfwCreateWindow(800, 800, "window", NULL, NULL);
@@ -468,23 +485,15 @@ int main()
         unsigned int rendersize;
         unsigned int* buffarray2 = new unsigned int[drawcalls * 3];
         unsigned int renderinc = 0;
+        renderinc += 2;
         float** renders = new float* [4];
-
+        renderinc = 0;
         addrender(buffarray2, renderinc, obj.vao, obj.vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
 
-        camfront.x = cos(camradx) * cos(camrady);
-        camfront.y = sin(camrady);
-        camfront.z = sin(camradx) * cos(camrady);
-
-        camfront = normalize(camfront);
-        camright = normalize(cross(glm::vec3(0, 1, 0), camfront));
-        camup = normalize(cross(camfront, camright));
-
-        viewmat = lookAt(campos, campos + camfront, camup);
 
         ifs(window);
 
-
+        cameramanage();
 
 
         glUniform1f(tlocation, 1 * 0.00125);
@@ -497,7 +506,7 @@ int main()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        transmat = glm::translate(glm::mat4(1.0f), campos);
+     
 
         glUseProgram(defaultShader.program);
 
@@ -507,7 +516,7 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "projmat"), 1, GL_FALSE, &projmat[0][0]);
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "viewmat"), 1, GL_FALSE, &viewmat[0][0]);
         glUniform3f(glGetUniformLocation(defaultShader.program, "campos"), campos.x, campos.y, campos.z);
-
+        glUniform3f(glGetUniformLocation(defaultShader.program, "lightpos"),1.2,1.4,1.2);
 
         drawobjects(draws, drawcalls);
 

@@ -169,6 +169,7 @@
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="classes\ui.cpp" />
     <ClCompile Include="classes\character.cpp" />
+    <ClCompile Include="classes\text.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\ebo.h" />
@@ -267,6 +268,7 @@
     <ClInclude Include="classes\drawobj.h" />
     <ClInclude Include="classes\ui.h" />
     <ClInclude Include="classes\character.h" />
+    <ClInclude Include="classes\text.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\freetype.lib" />
