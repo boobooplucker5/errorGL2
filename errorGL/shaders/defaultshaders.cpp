@@ -44,7 +44,7 @@ const char* frag =
 
 "void main()"
 "{"
-"float lightpower = 15;"
+"float lightpower = 5;"
 "vec3 lightdirection = normalize(lightpos - fragpos);"
 "float distance = length(lightpos - fragpos);"
 "float diffuse = max(dot(lightdirection,normal),0) / (distance/(lightpower/5));"

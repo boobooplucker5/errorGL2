@@ -64,6 +64,8 @@ extern const char* vertex;
 extern const char* frag;
 extern const char* fvertex;
 extern const char* ffrag;
+extern const char* uivertex;
+extern const char* uifrag;
 
 unsigned int* draws = new unsigned int[32176];
 drawobj makedrawobj(float* vertices, unsigned int* indices, int svert, int sind)
@@ -86,6 +88,41 @@ drawobj makedrawobj(float* vertices, unsigned int* indices, int svert, int sind)
     return obj;
 
 }
+void makedrawobj2(text& bruh)
+{
+  
+    for (int i = 0; i < bruh.textstring.length(); i++)
+    {
+        drawobj obj;
+        glGenBuffers(1, &obj.vbo);
+        glGenVertexArrays(1, &obj.vao);
+        glGenBuffers(1, &obj.ebo);
+        glBindVertexArray(obj.vao);
+        glBindBuffer(GL_ARRAY_BUFFER, obj.vbo);
+        glBufferData(GL_ARRAY_BUFFER, 64, bruh.vertices[i], GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj.ebo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, 24, bruh.indices, GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+        glEnableVertexAttribArray(1);
+        bruh.drawobjects[i] = obj;
+
+
+    }
+
+}
+void drawtext(text bruh, shader uiShader)
+{
+    for (int i = 0; i < bruh.textstring.length(); i++)
+    {
+        glBindVertexArray(bruh.drawobjects[i].vao);
+        glUniform3f(glGetUniformLocation(uiShader.program, "color"), bruh.textcolor.x,bruh.textcolor.y,bruh.textcolor.z);
+        glBindTexture(GL_TEXTURE_2D, bruh.characters[bruh.textstring.at(i)].glyphid);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    }
+}
+
 void move(int key)
 {
     switch (key)
@@ -250,10 +287,6 @@ void renderobjects(unsigned int* buffarray, unsigned int rendercalls, float** to
     for (unsigned int i = 0; i < rendercalls; i++)
     {
 
-
-
-
-
         mat.vertmult(totalverts[i * 2], totalverts[i * 2 + 1], buffarray[i * 3 + 2] / 4);
         glBindVertexArray(buffarray[i * 3]);
         glBindBuffer(GL_ARRAY_BUFFER, buffarray[i * 3 + 1]);
@@ -264,11 +297,11 @@ void renderobjects(unsigned int* buffarray, unsigned int rendercalls, float** to
     // 0 1 2 3
     // 0 2 4 6
 }
-void adddraw(unsigned int vao, unsigned int isize, unsigned int text)
+void adddraw(unsigned int vao, unsigned int isize, unsigned int textur)
 {
     draws[drawcalls] = vao;
     draws[drawcalls + 1] = isize;
-    draws[drawcalls + 2] = text;
+    draws[drawcalls + 2] = textur;
     drawcalls += 3;
 }
 void addrender(unsigned int* buffarr, unsigned int& inc, unsigned int vao, unsigned int vbo, unsigned int vsize, float** totalverts, float* verts, float* tverts)
@@ -312,13 +345,13 @@ int main()
         std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
         return -1;
     }
-    if (FT_New_Face(ft, "fonts/comicsans.ttf", 0, &face))
+    if (FT_New_Face(ft, "fonts/comic.ttf", 0, &face))
     {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
         return -1;
     }
 
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, 50);
     if (FT_Load_Char(face, 'f', FT_LOAD_RENDER))
     {
         std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
@@ -342,7 +375,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-
+    text bruh;
 
 
     GLFWwindow* window = glfwCreateWindow(800, 800, "window", NULL, NULL);
@@ -352,7 +385,7 @@ int main()
     gladLoadGL();
     glfwSetKeyCallback(window, ifpressed);
     glfwSetMouseButtonCallback(window, ifclicked);
-
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     for (unsigned char i = 0; i < 128; i++)
     {
         if (FT_Load_Char(face, i, FT_LOAD_RENDER))
@@ -363,7 +396,7 @@ int main()
 
         unsigned int txt;
         glGenTextures(1, &txt);
-         glBindTexture(GL_TEXTURE_2D, 0);
+     
                glBindTexture(GL_TEXTURE_2D, txt);
         glTexImage2D(
                 GL_TEXTURE_2D,
@@ -385,9 +418,11 @@ int main()
                    chter.size = vec2(face->glyph->bitmap.width,face->glyph->bitmap.rows);
                    chter.bearing = vec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
                    chter.advance = face->glyph->advance.x;
-         
+                   bruh.characters[i] = chter;
     }
 
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& inout = GetIO();
@@ -398,9 +433,12 @@ int main()
 
     shader defaultShader;
     shader frameShader;
+    shader uiShader;
     defaultShader.createShader(vertex, frag);
     frameShader.createShader(fvertex, ffrag);
-
+    uiShader.createShader(uivertex, uifrag);
+    glUseProgram(uiShader.program);
+    glUniform1i(glGetUniformLocation(uiShader.program, "text"), 0);
     glUseProgram(frameShader.program);
     glUniform1i(glGetUniformLocation(frameShader.program, "text"), 0);
 
@@ -420,9 +458,16 @@ int main()
         1, 0, 3,
         1, 2, 3
     };
-
+ 
     // unsigned int svbo, svao, sebo;
+    bruh.position = vec2(-350, 0);
+    bruh.textstring = "abc";
+    glUseProgram(uiShader.program);
+    bruh.settext();
 
+    bruh.textcolor = vec3(1,1,1);
+    makedrawobj2(bruh);
+    glUseProgram(defaultShader.program);
     drawobj sobj = makedrawobj(vertices, indices, 144, 24);
     //  unsigned int vbo, vao, ebo;
     drawobj obj = makedrawobj(booboo.verts, booboo.index, booboo.tvsize, booboo.tisize);
@@ -430,8 +475,8 @@ int main()
      //makedrawobj(booboo2.verts, booboo2.index, booboo2.tvsize, booboo2.tisize, vbo2, vao2, ebo2);
 
 
-    texture text("Textures/white.png");
-    texture text2("Textures/scrap.png");
+    texture textu("Textures/NULL.png");
+    texture textu2("Textures/scrap.png");
     unsigned int fbo;
     glGenFramebuffers(1, &fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -464,8 +509,9 @@ int main()
     glEnable(GL_DEPTH_CLAMP);
 
     glCullFace(GL_BACK);
-
-    adddraw(obj.vao, booboo.tisize, text.id);
+    glUniform3f(glGetUniformLocation(defaultShader.program, "lightpos"), 1.2, 1.4, 1.2);
+    adddraw(obj.vao, booboo.tisize, textu.id);
+   // adddraw(bruh.drawobject.vao, bruh.textstring.length() * 24, textu.id);
     // adddraw(vao2, booboo2.tisize, text.id);
     while (!glfwWindowShouldClose(window))
     {
@@ -506,23 +552,25 @@ int main()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-     
-
         glUseProgram(defaultShader.program);
+
+
 
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
 
+
+
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "projmat"), 1, GL_FALSE, &projmat[0][0]);
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "viewmat"), 1, GL_FALSE, &viewmat[0][0]);
         glUniform3f(glGetUniformLocation(defaultShader.program, "campos"), campos.x, campos.y, campos.z);
-        glUniform3f(glGetUniformLocation(defaultShader.program, "lightpos"),1.2,1.4,1.2);
+       
 
         drawobjects(draws, drawcalls);
 
 
 
-        glBindTexture(GL_TEXTURE_2D, text.id);
+        glBindTexture(GL_TEXTURE_2D, textu.id);
 
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDisable(GL_DEPTH_TEST);
@@ -537,7 +585,14 @@ int main()
 
         glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
+        glBindVertexArray(0);
+        glUseProgram(uiShader.program);
+  
+        
+       drawtext(bruh,uiShader);
+        
+    
+        glUseProgram(frameShader.program);
 
         pxpos = xpos;
         pypos = ypos;

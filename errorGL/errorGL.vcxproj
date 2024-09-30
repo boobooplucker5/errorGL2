@@ -311,6 +311,8 @@
     <Object Include="x64\Debug\imgui_widgets.obj" />
   </ItemGroup>
   <ItemGroup>
+    <Font Include="fonts\arial.ttf" />
+    <Font Include="fonts\comic.ttf" />
     <Font Include="fonts\comicsans.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

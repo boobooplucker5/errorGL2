@@ -170,5 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Font Include="fonts\comicsans.ttf" />
+    <Font Include="fonts\comic.ttf" />
+    <Font Include="fonts\arial.ttf" />
   </ItemGroup>
 </Project>
