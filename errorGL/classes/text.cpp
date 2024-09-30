@@ -2,16 +2,18 @@
 #include <iostream>
 #include <string>
 using namespace std;
+
 void text::settext()
 {
-	float xpos = position.x/800;
-	float ypos = position.y/800;
+	float xpos = position.x / 800;
+	float ypos = position.y / 800;
 	vertices = new float* [textstring.length()];
 	drawobjects = new drawobj[textstring.length()];
+
 	for (int i = 0; i < textstring.length(); i++)
 	{
 
-		
+
 		vertices[i] = new float[16];
 
 	}
@@ -28,15 +30,15 @@ void text::settext()
 
 
 		character chr = characters[textstring.at(i)];
-	
+
 		float xposition = xpos + float(chr.bearing.x) / 800;
 		float yposition = ypos - float(chr.size.y - chr.bearing.y) / 800;
 
 		vertices[i][0] = xposition;
 		vertices[i][1] = yposition;
-		vertices[i][2]  = 0;
+		vertices[i][2] = 0;
 		vertices[i][3] = 0;
-	
+
 		vertices[i][4] = xposition + float(chr.size.x) / 800;
 		vertices[i][5] = yposition;
 		vertices[i][6] = 1;
@@ -47,16 +49,31 @@ void text::settext()
 		vertices[i][10] = 0;
 		vertices[i][11] = 1;
 
-		vertices[i][12]  = xposition + float(chr.size.x) / 800;
+		vertices[i][12] = xposition + float(chr.size.x) / 800;
 		vertices[i][13] = yposition + float(chr.size.y) / 800;
 		vertices[i][14] = 1;
-		vertices[i][15] = 1;	
-
+		vertices[i][15] = 1;
 
 	
 
+
 		xpos += float(chr.advance) / 64 / 800;
-		
+
+
+	}
+	if (centered == true)
+	{
+		float tingye = (position.x-vertices[textstring.length() - 1][12])/2;
+	
+		for (int i = 0; i < textstring.length(); i++)
+		{
+			for (int x = 0; x < 16; x+=4)
+			{
+				vertices[i][x] += tingye;
+			}
+			
+		}
+		//xpos -= tingye;
 
 	}
 }
