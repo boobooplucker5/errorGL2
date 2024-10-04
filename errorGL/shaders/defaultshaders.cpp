@@ -6,16 +6,19 @@ const char* vertex =
 
 "uniform mat4 projmat;"
 "uniform mat4 viewmat;"
+"uniform vec3 lightpos;"
 
 "out vec2 textcord;"
 "out vec3 color;"
 
 "out vec3 fragpos;"
 "out vec3 normal;"
+"out float diffuse;"
 
 "void main()"
 "{"
 
+//"diffuse = max(dot(normalize(lightpos-pos),normal),0) / (distance/(5/5));"
 
 "gl_Position = projmat*viewmat*vec4(pos,1);"
 
@@ -23,7 +26,8 @@ const char* vertex =
 "color = vec3(0,0,0);"
 "fragpos = pos;"
 "normal = norm;"
-
+//"diffuse = 0;"
+"diffuse = max(dot(normalize(lightpos-pos),normal),0);"
 " }";
 const char* frag =
 "#version 330 core\r\n"
@@ -37,6 +41,7 @@ const char* frag =
 
 "in vec3 fragpos;"
 "in vec3 normal;"
+"in float diffuse;"
 
 "uniform sampler2D text;"
 
@@ -47,7 +52,7 @@ const char* frag =
 "float lightpower = 5;"
 "vec3 lightdirection = normalize(lightpos - fragpos);"
 "float distance = length(lightpos - fragpos);"
-"float diffuse = max(dot(lightdirection,normal),0) / (distance/(lightpower/5));"
+
 
 "vec3 viewdirection = normalize(campos - fragpos);"
 "vec3 reflectdirection = reflect(-lightdirection,normal);"

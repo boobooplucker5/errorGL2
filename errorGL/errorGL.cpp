@@ -39,8 +39,11 @@
 
 int drawcalls = 0;
 int drawinc = 0;
+
 vector<unsigned int> keyholds = {};
-//int keynums[] = { 87,65,83,68,81,69,82,84,70,71,32,340 };
+vector<text*> typingtexts;
+bool caps = true;
+bool shift = false;
 float camradx = 0;
 float camrady = 0;
 float t = 0;
@@ -88,9 +91,10 @@ drawobj makedrawobj(float* vertices, unsigned int* indices, int svert, int sind)
     return obj;
 
 }
+
 void makedrawobj2(text& bruh)
 {
-  
+
     for (int i = 0; i < bruh.textstring.length(); i++)
     {
         drawobj obj;
@@ -117,12 +121,45 @@ void drawtext(text bruh, shader uiShader)
     for (int i = 0; i < bruh.textstring.length(); i++)
     {
         glBindVertexArray(bruh.drawobjects[i].vao);
-        glUniform3f(glGetUniformLocation(uiShader.program, "color"), bruh.textcolor.x,bruh.textcolor.y,bruh.textcolor.z);
+        glUniform3f(glGetUniformLocation(uiShader.program, "color"), bruh.textcolor.x, bruh.textcolor.y, bruh.textcolor.z);
         glBindTexture(GL_TEXTURE_2D, bruh.characters[bruh.textstring.at(i)].glyphid);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     }
 }
+void updatetext(text& bruh)
+{
+    if (bruh.textstring.length() > 0)
+    {
+        delete[] bruh.vertices;
+        bruh.settext();
+        delete[] bruh.drawobjects;
+        bruh.drawobjects = new drawobj[bruh.textstring.length()];
+        makedrawobj2(bruh);
+    }
 
+}
+void type(vector<text*> vec, int key)
+{
+
+    char typechar = (char)key;
+    for (int i = 0; i < vec.size(); i++)
+    {
+        if (key != 259)
+        {
+            vec[i]->textstring += key;
+        }
+        else
+        {
+            if (vec[i]->textstring.length() > 0)
+            {
+                vec[i]->textstring.erase(vec[i]->textstring.length() - 1);
+            }
+           
+        }
+     
+    }
+
+}
 void move(int key)
 {
     switch (key)
@@ -169,6 +206,167 @@ void move(int key)
         break;
     }
 }
+int keytype(int key)
+{
+    int newkey = key;
+    char charkey = (char)key;
+    if (shift == true)
+    {
+        switch (key)
+        {
+        case 96:
+            newkey = 126;
+            break;
+        case 49:
+            newkey = 33;
+            break;
+        case 50:
+            newkey = 64;
+            break;
+        case 51:
+            newkey = 35;
+            break;
+        case 52:
+            newkey = 36;
+            break;
+        case 53:
+            newkey = 37;
+            break;
+        case 54:
+            newkey = 37;
+            break;
+        case 55:
+            newkey = 94;
+        case 56:
+            newkey = 42;
+            break;
+        case 57:
+            newkey = 40;
+            break;
+        case 48:
+            newkey = 41;
+            break;
+        case 45:
+            newkey = 95;
+            break;
+        case 61:
+            newkey = 43;
+            break;
+        case 91:
+            newkey = 123;
+            break;
+        case 93:
+            newkey = 125;
+            break;
+        case 92:
+            newkey = 124;
+            break;
+        case 59:
+            newkey = 58;
+            break;
+        case 39:
+            newkey = 34;
+            break;
+        case 44:
+            newkey = 60;
+            break;
+        case 46:
+            newkey = 62;
+            break;
+        case 47:
+            newkey = 63;
+            break;
+        default:
+            break;
+        }
+    }
+    if (caps == true)
+    {
+        switch (charkey)
+        {
+        case 'Q':
+            newkey = int('q');
+        break;
+        case 'W':
+            newkey = int('w');
+            break;
+        case 'E':
+            newkey = int('e');
+            break;
+        case 'R':
+            newkey = int('r');
+            break;
+        case 'T':
+            newkey = int('t');
+            break;
+        case 'Y':
+            newkey = int('y');
+            break;
+        case 'U':
+            newkey = int('u');
+            break;
+        case 'I':
+            newkey = int('i');
+            break;
+        case 'O':
+            newkey = int('o');
+            break;
+        case 'P':
+            newkey = int('p');
+            break;
+        case 'A':
+            newkey = int('a');
+            break;
+        case 'S':
+            newkey = int('s');
+            break;
+        case 'D':
+            newkey = int('d');
+            break;
+        case 'F':
+            newkey = int('f');
+            break;
+        case 'G':
+            newkey = int('g');
+            break;
+        case 'H':
+            newkey = int('h');
+            break;
+        case 'J':
+            newkey = int('j');
+            break;
+        case 'K':
+            newkey = int('k');
+            break;
+        case 'L':
+            newkey = int('l');
+            break;
+        case 'Z':
+            newkey = int('z');
+            break;
+        case 'X':
+            newkey = int('x');
+            break;
+        case 'C':
+            newkey = int('c');
+            break;
+        case 'V':
+            newkey = int('v');
+            break;
+        case 'B':
+            newkey = int('b');
+            break;
+        case 'N':
+            newkey = int('n');
+            break;
+        case 'M':
+            newkey = int('m');
+            break;
+        }
+    }
+    
+    return newkey;
+}
 void ifpressed(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 
@@ -177,6 +375,11 @@ void ifpressed(GLFWwindow* window, int key, int scancode, int action, int mods)
 
         if (action == GLFW_RELEASE)
         {
+   
+            if (key == 344 || key == 340)
+            {
+                shift = false;
+            }
             keyholds.erase(find(keyholds.begin(), keyholds.end(), key));
         }
     }
@@ -184,7 +387,22 @@ void ifpressed(GLFWwindow* window, int key, int scancode, int action, int mods)
     {
         if (action == GLFW_PRESS)
         {
-
+            if (key == 280)
+            {
+                caps =  abs(caps-1);
+            }
+            if (key == 344 || key == 340)
+            {
+                shift = true;
+            }
+            if (key < 280)
+            {
+                type(typingtexts, keytype(key));
+            }
+           
+            cout << (char)key << "\n";
+            //cout << typingtexts.at(0).textstring << "\n";
+          
             keyholds.push_back(key);
         }
     }
@@ -262,14 +480,18 @@ void ifs(GLFWwindow* window)
         camrady = 1.57;
     }
 };
+
 void keystuff(int key)
 {
+
     if (key == 87 | key == 65 | key == 83 | key == 68)
     {
         move(key);
     }
 
 };
+
+
 void drawobjects(unsigned int* buffarray, unsigned int drawcalls)
 {
     for (int i = 0; i < drawcalls; i += 3)
@@ -333,6 +555,7 @@ using namespace ImGui;
 int main()
 {
 
+
     glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
     mesh booboo2;
     mesh booboo;
@@ -345,13 +568,13 @@ int main()
         std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
         return -1;
     }
-    if (FT_New_Face(ft, "fonts/comic.ttf", 0, &face))
+    if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face))
     {
         std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
         return -1;
     }
 
-    FT_Set_Pixel_Sizes(face, 0, 50);
+    FT_Set_Pixel_Sizes(face, 0, 100);
     if (FT_Load_Char(face, 'f', FT_LOAD_RENDER))
     {
         std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
@@ -360,7 +583,7 @@ int main()
 
     double start = omp_get_wtime();
 
-    booboo.objload("meshes/cubi.txt");
+    booboo.load("meshes/spere.bin");
     // booboo.objload("meshes/hqsphere.txt");
       //booboo.convert("meshes/spere.bin");as
   //booboo.load("meshes/sample.bin");
@@ -376,14 +599,15 @@ int main()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     text bruh;
-
-
+    bruh.centered = true;
+   
     GLFWwindow* window = glfwCreateWindow(800, 800, "window", NULL, NULL);
 
 
     glfwMakeContextCurrent(window);
     gladLoadGL();
     glfwSetKeyCallback(window, ifpressed);
+
     glfwSetMouseButtonCallback(window, ifclicked);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     for (unsigned char i = 0; i < 128; i++)
@@ -396,29 +620,29 @@ int main()
 
         unsigned int txt;
         glGenTextures(1, &txt);
-     
-               glBindTexture(GL_TEXTURE_2D, txt);
+
+        glBindTexture(GL_TEXTURE_2D, txt);
         glTexImage2D(
-                GL_TEXTURE_2D,
-                0,
-                GL_RED,
-                face->glyph->bitmap.width,
-                face->glyph->bitmap.rows,
-                0,
-                GL_RED,
-                GL_UNSIGNED_BYTE,
-                face->glyph->bitmap.buffer
-            );
-               glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-               glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-               glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-               glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                    character chter;
-                    chter.glyphid = txt;
-                   chter.size = vec2(face->glyph->bitmap.width,face->glyph->bitmap.rows);
-                   chter.bearing = vec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
-                   chter.advance = face->glyph->advance.x;
-                   bruh.characters[i] = chter;
+            GL_TEXTURE_2D,
+            0,
+            GL_RED,
+            face->glyph->bitmap.width,
+            face->glyph->bitmap.rows,
+            0,
+            GL_RED,
+            GL_UNSIGNED_BYTE,
+            face->glyph->bitmap.buffer
+        );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        character chter;
+        chter.glyphid = txt;
+        chter.size = vec2(face->glyph->bitmap.width, face->glyph->bitmap.rows);
+        chter.bearing = vec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
+        chter.advance = face->glyph->advance.x;
+        bruh.characters[i] = chter;
     }
 
     FT_Done_Face(face);
@@ -458,24 +682,25 @@ int main()
         1, 0, 3,
         1, 2, 3
     };
- 
+
     // unsigned int svbo, svao, sebo;
-    bruh.position = vec2(-350, 0);
-    bruh.textstring = "abc";
+    bruh.position = vec2(0, 0);
+    bruh.textstring = "hello world.";
     glUseProgram(uiShader.program);
     bruh.settext();
 
-    bruh.textcolor = vec3(1,1,1);
+    bruh.textcolor = vec3(1, 1, 1);
     makedrawobj2(bruh);
     glUseProgram(defaultShader.program);
+
     drawobj sobj = makedrawobj(vertices, indices, 144, 24);
-    //  unsigned int vbo, vao, ebo;
     drawobj obj = makedrawobj(booboo.verts, booboo.index, booboo.tvsize, booboo.tisize);
-    // unsigned int vbo2, vao2, ebo2;
-     //makedrawobj(booboo2.verts, booboo2.index, booboo2.tvsize, booboo2.tisize, vbo2, vao2, ebo2);
 
 
-    texture textu("Textures/NULL.png");
+
+
+
+    texture textu("Textures/white.png");
     texture textu2("Textures/scrap.png");
     unsigned int fbo;
     glGenFramebuffers(1, &fbo);
@@ -511,8 +736,7 @@ int main()
     glCullFace(GL_BACK);
     glUniform3f(glGetUniformLocation(defaultShader.program, "lightpos"), 1.2, 1.4, 1.2);
     adddraw(obj.vao, booboo.tisize, textu.id);
-   // adddraw(bruh.drawobject.vao, bruh.textstring.length() * 24, textu.id);
-    // adddraw(vao2, booboo2.tisize, text.id);
+    typingtexts.push_back(&bruh);
     while (!glfwWindowShouldClose(window))
     {
 
@@ -522,13 +746,13 @@ int main()
 
 
         t += 0.001;
-        //keyholds.clear();
+
         for (int i = 0; i < keyholds.size(); i++)
         {
             keystuff(keyholds[i]);
         }
 
-        unsigned int rendersize;
+        unsigned int rendersize;      
         unsigned int* buffarray2 = new unsigned int[drawcalls * 3];
         unsigned int renderinc = 0;
         renderinc += 2;
@@ -540,7 +764,7 @@ int main()
         ifs(window);
 
         cameramanage();
-
+      
 
         glUniform1f(tlocation, 1 * 0.00125);
 
@@ -555,7 +779,6 @@ int main()
         glUseProgram(defaultShader.program);
 
 
-
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
 
@@ -564,7 +787,7 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "projmat"), 1, GL_FALSE, &projmat[0][0]);
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "viewmat"), 1, GL_FALSE, &viewmat[0][0]);
         glUniform3f(glGetUniformLocation(defaultShader.program, "campos"), campos.x, campos.y, campos.z);
-       
+
 
         drawobjects(draws, drawcalls);
 
@@ -587,11 +810,13 @@ int main()
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
         glUseProgram(uiShader.program);
-  
-        
-       drawtext(bruh,uiShader);
-        
     
+    
+ 
+        updatetext(bruh);
+        drawtext(bruh, uiShader);
+
+
         glUseProgram(frameShader.program);
 
         pxpos = xpos;
@@ -600,7 +825,7 @@ int main()
         ImGui_ImplOpenGL3_RenderDrawData(GetDrawData());
         glfwSwapBuffers(window);
         glfwPollEvents();
-
+        //typingtexts.clear();
     }
 
 

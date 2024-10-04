@@ -1,4 +1,6 @@
 #pragma once
+#include "glad/glad.h"
+#include "GLFW/glfw3.h"
 #include <string>
 #include <map>
 #include "character.h"
@@ -14,6 +16,7 @@ public:
 
 	drawobj* drawobjects;
 	bool centered;
+	bool typing;
 	map<char, character> characters;
 	string textstring;
 	vec2 position;
@@ -21,6 +24,5 @@ public:
 	float** vertices;
 	unsigned int indices[6];
 	void settext();
-
+	
 };
-
