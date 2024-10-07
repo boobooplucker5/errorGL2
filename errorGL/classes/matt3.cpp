@@ -13,9 +13,9 @@ void matt3::translate()
 }
 void matt3::fill()
 {
-	m[0] = 1 ; m[1] = 1; m[1] = 0;
-	m[3] = 1; m[4] = 1; m[1] = 0;
-	m[6] = 1; m[7] = 1; m[1] = 0;
+	m[0] = 1 ; m[1] = 1; m[2] = 1;
+	m[3] = 1; m[4] = 1; m[5] = 1;
+	m[6] = 1; m[7] = 1; m[8] = 1;
 }
 
 void matt3::vertmult(float* verts, float* tverts, unsigned int vsize)

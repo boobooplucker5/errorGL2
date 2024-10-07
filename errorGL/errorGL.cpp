@@ -11,9 +11,11 @@
 
 #include "classes/shader.h"
 #include "classes/vec3.h"
-#include "classes/mesh.h"
+#include "classes/object.h"
+
+
 #include "classes/texture.h"
-#include "classes/drawobj.h"
+
 #include "classes/matt3.h"
 #include "classes/ui.h"
 #include "classes/text.h"
@@ -33,6 +35,8 @@
 
 #include "ft2build.h"
 #include "classes/character.h"
+
+
 
 #include FT_FREETYPE_H
 #define STB_IMAGE_IMPLEMENTATION
@@ -55,7 +59,7 @@ glm::mat4 projmat;
 glm::mat4 transmat;
 glm::mat4 viewmat;
 
-float inc = 1;
+float inc = 30;
 int mouseholdr = 0;
 double xpos = 800;
 double ypos = 800;
@@ -71,6 +75,26 @@ extern const char* uivertex;
 extern const char* uifrag;
 
 unsigned int* draws = new unsigned int[32176];
+void objdrawobj(object& obj)
+{
+  
+    glGenBuffers(1, &obj.drawobject.vbo);
+    glGenVertexArrays(1, &obj.drawobject.vao);
+    glGenBuffers(1, &obj.drawobject.ebo);
+    glBindVertexArray(obj.drawobject.vao);
+    glBindBuffer(GL_ARRAY_BUFFER, obj.drawobject.vbo);
+    glBufferData(GL_ARRAY_BUFFER, obj.objectmesh.tvsize, obj.objectmesh.verts, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj.drawobject.ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, obj.objectmesh.tisize, obj.objectmesh.index, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+
+}
 drawobj makedrawobj(float* vertices, unsigned int* indices, int svert, int sind)
 {
     drawobj obj;
@@ -91,7 +115,6 @@ drawobj makedrawobj(float* vertices, unsigned int* indices, int svert, int sind)
     return obj;
 
 }
-
 void makedrawobj2(text& bruh)
 {
 
@@ -138,27 +161,48 @@ void updatetext(text& bruh)
     }
 
 }
+void updatetype(text& bruh, int key)
+{
+    if (bruh.textstring.length() > 0)
+    {
+        delete[] bruh.vertices;
+        bruh.settext();
+        for (int i = 0; i < bruh.textstring.length(); i++)
+        {
+            glDeleteBuffers(1, &bruh.drawobjects->ebo);
+            glDeleteBuffers(1, &bruh.drawobjects->vbo);
+            glDeleteBuffers(1, &bruh.drawobjects->vao);
+        }
+        delete[] bruh.drawobjects;
+        bruh.drawobjects = new drawobj[bruh.textstring.length()];
+        makedrawobj2(bruh);
+    }
+
+}
 void type(vector<text*> vec, int key)
 {
 
     char typechar = (char)key;
     for (int i = 0; i < vec.size(); i++)
     {
+        
         if (key != 259)
         {
             vec[i]->textstring += key;
+            updatetext(*vec[i]);
         }
         else
         {
             if (vec[i]->textstring.length() > 0)
             {
-                vec[i]->textstring.erase(vec[i]->textstring.length() - 1);
+                vec[i]->textstring.erase(vec[i]->textstring.length() - 1); 
             }
            
         }
+      
      
     }
-
+  
 }
 void move(int key)
 {
@@ -480,7 +524,28 @@ void ifs(GLFWwindow* window)
         camrady = 1.57;
     }
 };
+FT_Face makefont(FT_Library& library, const char* fontdirectory, int size)
+{
+    FT_Face face;
+    if (FT_Init_FreeType(&library))
+    {
+        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << "\n";
 
+    }
+    if (FT_New_Face(library, fontdirectory, 0, &face))
+    {
+        std::cout << "ERROR::FREETYPE: Failed to load font" << "\n";
+      
+    }
+    FT_Set_Pixel_Sizes(face, 0, 100);
+    if (FT_Load_Char(face, 'f', FT_LOAD_RENDER))
+    {
+        std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << "\n";
+     
+    }
+ 
+    return face;
+}
 void keystuff(int key)
 {
 
@@ -490,8 +555,6 @@ void keystuff(int key)
     }
 
 };
-
-
 void drawobjects(unsigned int* buffarray, unsigned int drawcalls)
 {
     for (int i = 0; i < drawcalls; i += 3)
@@ -526,6 +589,13 @@ void adddraw(unsigned int vao, unsigned int isize, unsigned int textur)
     draws[drawcalls + 2] = textur;
     drawcalls += 3;
 }
+void objadddraw(object obj, unsigned int textur)
+{
+    draws[drawcalls] = obj.drawobject.vao;
+    draws[drawcalls + 1] = obj.objectmesh.tisize;
+    draws[drawcalls + 2] = textur;
+    drawcalls += 3;
+}
 void addrender(unsigned int* buffarr, unsigned int& inc, unsigned int vao, unsigned int vbo, unsigned int vsize, float** totalverts, float* verts, float* tverts)
 {
     totalverts[inc / 3 * 2] = verts;
@@ -533,6 +603,15 @@ void addrender(unsigned int* buffarr, unsigned int& inc, unsigned int vao, unsig
     buffarr[inc] = vao;
     buffarr[inc + 1] = vbo;
     buffarr[inc + 2] = vsize;
+    inc += 3;
+}
+void objaddrender(unsigned int* buffarr, unsigned int& inc, float** totalverts, object obj)
+{
+    totalverts[inc / 3 * 2] = obj.objectmesh.verts;
+    totalverts[inc / 3 * 2 + 1] = obj.objectmesh.verts;
+    buffarr[inc] = obj.drawobject.vao;
+    buffarr[inc + 1] = obj.drawobject.vbo;
+    buffarr[inc + 2] = obj.drawobject.vsize;
     inc += 3;
 }
 void cameramanage()
@@ -555,37 +634,25 @@ using namespace ImGui;
 int main()
 {
 
+    
 
+ 
     glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
     mesh booboo2;
     mesh booboo;
 
     FT_Library ft;
-    FT_Face face;
+    FT_Face face = makefont(ft, "fonts/arial.ttf",100);
 
-    if (FT_Init_FreeType(&ft))
-    {
-        std::cout << "ERROR::FREETYPE: Could not init FreeType Library" << std::endl;
-        return -1;
-    }
-    if (FT_New_Face(ft, "fonts/arial.ttf", 0, &face))
-    {
-        std::cout << "ERROR::FREETYPE: Failed to load font" << std::endl;
-        return -1;
-    }
 
-    FT_Set_Pixel_Sizes(face, 0, 100);
-    if (FT_Load_Char(face, 'f', FT_LOAD_RENDER))
-    {
-        std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-        return -1;
-    }
+
+    
 
     double start = omp_get_wtime();
 
-    booboo.load("meshes/spere.bin");
-    // booboo.objload("meshes/hqsphere.txt");
-      //booboo.convert("meshes/spere.bin");as
+  //  booboo.load("meshes/permaid.txt");
+     //booboo.objload("meshes/sqrpyro.txt");
+  //    booboo.convert("meshes/simple.bin");
   //booboo.load("meshes/sample.bin");
 
   //  booboo2.objload("meshes/crash.txt");
@@ -693,15 +760,31 @@ int main()
     makedrawobj2(bruh);
     glUseProgram(defaultShader.program);
 
-    drawobj sobj = makedrawobj(vertices, indices, 144, 24);
-    drawobj obj = makedrawobj(booboo.verts, booboo.index, booboo.tvsize, booboo.tisize);
+    object cubeobj;
+    cubeobj.size = vec3(12, 12,12);
+    cubeobj.position = vec3(100, 0, 0);
+    cubeobj.create("meshes/simple.bin");
+    objdrawobj(cubeobj);
+    object sphereobj;
+    sphereobj.size = vec3(12, 12, 12);
+    sphereobj.position = vec3(100, 0, 0);
+    sphereobj.create("meshes/spere.bin");
+    objdrawobj(sphereobj);
+    object pyrobj;
+    pyrobj.size = vec3(12, 12, 12);
+    pyrobj.position = vec3(0, 0, 24);
+    pyrobj.create("meshes/cube.bin");
+    objdrawobj(pyrobj);
 
+    drawobj sobj = makedrawobj(vertices, indices, 144, 24);
+
+   // cubeobj.drawobject = makedrawobj(cubeobj.objectmesh.verts, cubeobj.objectmesh.index, cubeobj.objectmesh.tvsize, cubeobj.objectmesh.tisize);
 
 
 
 
     texture textu("Textures/white.png");
-    texture textu2("Textures/scrap.png");
+    texture textu2("Textures/NULL.png");
     unsigned int fbo;
     glGenFramebuffers(1, &fbo);
     glBindFramebuffer(GL_FRAMEBUFFER, fbo);
@@ -732,19 +815,26 @@ int main()
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glEnable(GL_DEPTH_CLAMP);
-
+   
     glCullFace(GL_BACK);
-    glUniform3f(glGetUniformLocation(defaultShader.program, "lightpos"), 1.2, 1.4, 1.2);
-    adddraw(obj.vao, booboo.tisize, textu.id);
+//    glUniform3f(glGetUniformLocation(defaultShader.program, "lightpos"), 1.2, 1.4, 1.2);
+  //  adddraw(obj.vao, booboo.tisize, textu.id);
+    objadddraw(cubeobj,textu2.id);
+    objadddraw(sphereobj, textu2.id);
+    objadddraw(pyrobj, textu2.id);
+    //adddraw(cubeobj.drawobject.vao, cubeobj.objectmesh.tisize, textu.id);
     typingtexts.push_back(&bruh);
+    vec3 lightpos(0,30,0);
     while (!glfwWindowShouldClose(window))
     {
-
+        lightpos.z = 0;
+        lightpos.y = (cos(t) - sin(t))*30;
+        lightpos.x = (sin(t) + cos(t))*30;
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         NewFrame();
 
-
+        
         t += 0.001;
 
         for (int i = 0; i < keyholds.size(); i++)
@@ -755,14 +845,17 @@ int main()
         unsigned int rendersize;      
         unsigned int* buffarray2 = new unsigned int[drawcalls * 3];
         unsigned int renderinc = 0;
-        renderinc += 2;
-        float** renders = new float* [4];
+        renderinc += 4;
+        float** renders = new float* [8];
         renderinc = 0;
-        addrender(buffarray2, renderinc, obj.vao, obj.vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
-
-
+        //addrender(buffarray2, renderinc, obj.vao, obj.vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
+       // addrender(buffarray2, renderinc, cubeobj.drawobject.vao, cubeobj.drawobject.vbo,cubeobj.objectmesh.tvsize, renders, cubeobj.objectmesh.verts, cubeobj.objectmesh.tverts);
+        objaddrender(buffarray2,renderinc,renders,cubeobj);
+        objaddrender(buffarray2, renderinc, renders, sphereobj);
+        objaddrender(buffarray2, renderinc, renders, pyrobj);
         ifs(window);
-
+        matt3 rot;
+        
         cameramanage();
       
 
@@ -787,7 +880,7 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "projmat"), 1, GL_FALSE, &projmat[0][0]);
         glUniformMatrix4fv(glGetUniformLocation(defaultShader.program, "viewmat"), 1, GL_FALSE, &viewmat[0][0]);
         glUniform3f(glGetUniformLocation(defaultShader.program, "campos"), campos.x, campos.y, campos.z);
-
+        glUniform3f(glGetUniformLocation(defaultShader.program, "lightpos"), lightpos.x, lightpos.y, lightpos.z);
 
         drawobjects(draws, drawcalls);
 
@@ -813,8 +906,8 @@ int main()
     
     
  
-        updatetext(bruh);
-        drawtext(bruh, uiShader);
+      //  
+       drawtext(bruh, uiShader);
 
 
         glUseProgram(frameShader.program);

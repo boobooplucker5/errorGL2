@@ -22,8 +22,8 @@ public:
 
 	unsigned int tisize;
 	unsigned int tvsize;
-	matt3 transmat;
-	drawobj draw;
+
+
 
 	int* search(string line, int start, char seperator);
 	void slash(string line, int &s, int &s2);

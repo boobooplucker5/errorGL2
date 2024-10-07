@@ -143,12 +143,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="classes\ebo.cpp" />
     <ClCompile Include="classes\mesh.cpp" />
     <ClCompile Include="classes\shader.cpp" />
     <ClCompile Include="classes\texture.cpp" />
-    <ClCompile Include="classes\vao.cpp" />
-    <ClCompile Include="classes\vbo.cpp" />
     <ClCompile Include="classes\vec2.cpp" />
     <ClCompile Include="classes\vec3.cpp" />
     <ClCompile Include="dependencies\include\glm\glm.cppm" />
@@ -163,6 +160,7 @@
     <ClCompile Include="errorGL.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="classes\matt3.cpp" />
+    <ClCompile Include="classes\object.cpp" />
     <ClCompile Include="shaders\defaultshaders.cpp" />
     <ClCompile Include="shaders\frameshaders.cpp" />
     <ClCompile Include="shaders\uishader.cpp" />
@@ -172,12 +170,9 @@
     <ClCompile Include="classes\text.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="classes\ebo.h" />
     <ClInclude Include="classes\mesh.h" />
     <ClInclude Include="classes\shader.h" />
     <ClInclude Include="classes\texture.h" />
-    <ClInclude Include="classes\vao.h" />
-    <ClInclude Include="classes\vbo.h" />
     <ClInclude Include="classes\vec2.h" />
     <ClInclude Include="classes\vec3.h" />
     <ClInclude Include="dependencies\include\freetype\freetype.h" />
@@ -269,6 +264,7 @@
     <ClInclude Include="classes\ui.h" />
     <ClInclude Include="classes\character.h" />
     <ClInclude Include="classes\text.h" />
+    <ClInclude Include="classes\object.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="dependencies\lib\freetype.lib" />
@@ -282,15 +278,19 @@
     <Text Include="meshes\cubi.txt" />
     <Text Include="meshes\gunno.txt" />
     <Text Include="meshes\hqsphere.txt" />
+    <Text Include="meshes\permaid.txt" />
     <Text Include="meshes\pyramid.txt" />
     <Text Include="meshes\spere.txt" />
+    <Text Include="meshes\sqrpyro.txt" />
     <Text Include="meshes\terrain.txt" />
     <Text Include="bruh.txt" />
     <Text Include="misc\miscy_stuff.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="meshes\crash.bin" />
+    <None Include="meshes\cube.bin" />
     <None Include="meshes\sample.bin" />
+    <None Include="meshes\simple.bin" />
     <None Include="meshes\spere.bin" />
   </ItemGroup>
   <ItemGroup>
