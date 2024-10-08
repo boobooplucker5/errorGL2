@@ -31,9 +31,10 @@
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="classes\ui.cpp" />
     <ClCompile Include="classes\character.cpp" />
-    <ClCompile Include="shaders\uishader.cpp" />
+    <ClCompile Include="shaders\textshader.cpp" />
     <ClCompile Include="classes\text.cpp" />
     <ClCompile Include="classes\object.cpp" />
+    <ClCompile Include="shaders\uishaders.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="classes\mesh.h" />

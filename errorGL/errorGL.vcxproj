@@ -163,7 +163,8 @@
     <ClCompile Include="classes\object.cpp" />
     <ClCompile Include="shaders\defaultshaders.cpp" />
     <ClCompile Include="shaders\frameshaders.cpp" />
-    <ClCompile Include="shaders\uishader.cpp" />
+    <ClCompile Include="shaders\uishaders.cpp" />
+    <ClCompile Include="shaders\textshader.cpp" />
     <ClCompile Include="stb.cpp" />
     <ClCompile Include="classes\ui.cpp" />
     <ClCompile Include="classes\character.cpp" />

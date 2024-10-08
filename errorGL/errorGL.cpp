@@ -73,6 +73,8 @@ extern const char* fvertex;
 extern const char* ffrag;
 extern const char* uivertex;
 extern const char* uifrag;
+extern const char* textvertex;
+extern const char* textfrag;
 
 unsigned int* draws = new unsigned int[32176];
 void objdrawobj(object& obj)
@@ -92,6 +94,25 @@ void objdrawobj(object& obj)
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(5 * sizeof(float)));
     glEnableVertexAttribArray(2);
+
+
+}
+void uidrawobj(ui& obj)
+{
+
+    glGenBuffers(1, &obj.drawobject.vbo);
+    glGenVertexArrays(1, &obj.drawobject.vao);
+    glGenBuffers(1, &obj.drawobject.ebo);
+    glBindVertexArray(obj.drawobject.vao);
+    glBindBuffer(GL_ARRAY_BUFFER, obj.drawobject.vbo);
+    glBufferData(GL_ARRAY_BUFFER, 80, obj.vertices, GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, obj.drawobject.ebo);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 24, obj.indices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
 
 
 }
@@ -642,7 +663,7 @@ int main()
     mesh booboo;
 
     FT_Library ft;
-    FT_Face face = makefont(ft, "fonts/arial.ttf",100);
+    FT_Face face = makefont(ft, "fonts/comic.ttf",100);
 
 
 
@@ -724,12 +745,14 @@ int main()
 
     shader defaultShader;
     shader frameShader;
+    shader textShader;
     shader uiShader;
     defaultShader.createShader(vertex, frag);
     frameShader.createShader(fvertex, ffrag);
+    textShader.createShader(textvertex, textfrag);
     uiShader.createShader(uivertex, uifrag);
-    glUseProgram(uiShader.program);
-    glUniform1i(glGetUniformLocation(uiShader.program, "text"), 0);
+    glUseProgram(textShader.program);
+    glUniform1i(glGetUniformLocation(textShader.program, "text"), 0);
     glUseProgram(frameShader.program);
     glUniform1i(glGetUniformLocation(frameShader.program, "text"), 0);
 
@@ -753,7 +776,7 @@ int main()
     // unsigned int svbo, svao, sebo;
     bruh.position = vec2(0, 0);
     bruh.textstring = "hello world.";
-    glUseProgram(uiShader.program);
+    glUseProgram(textShader.program);
     bruh.settext();
 
     bruh.textcolor = vec3(1, 1, 1);
@@ -762,19 +785,21 @@ int main()
 
     object cubeobj;
     cubeobj.size = vec3(12, 12,12);
-    cubeobj.position = vec3(100, 0, 0);
-    cubeobj.create("meshes/simple.bin");
+    cubeobj.position = vec3(24, 24, 24);
+    cubeobj.create("meshes/cube.bin");
     objdrawobj(cubeobj);
     object sphereobj;
     sphereobj.size = vec3(12, 12, 12);
-    sphereobj.position = vec3(100, 0, 0);
-    sphereobj.create("meshes/spere.bin");
+    sphereobj.position = vec3(0, 24, 48);
+    sphereobj.create("meshes/cube.bin");
     objdrawobj(sphereobj);
     object pyrobj;
     pyrobj.size = vec3(12, 12, 12);
     pyrobj.position = vec3(0, 0, 24);
     pyrobj.create("meshes/cube.bin");
     objdrawobj(pyrobj);
+
+
 
     drawobj sobj = makedrawobj(vertices, indices, 144, 24);
 
@@ -819,17 +844,25 @@ int main()
     glCullFace(GL_BACK);
 //    glUniform3f(glGetUniformLocation(defaultShader.program, "lightpos"), 1.2, 1.4, 1.2);
   //  adddraw(obj.vao, booboo.tisize, textu.id);
-    objadddraw(cubeobj,textu2.id);
-    objadddraw(sphereobj, textu2.id);
-    objadddraw(pyrobj, textu2.id);
+   // objadddraw(cubeobj,textu2.id);
+   // objadddraw(sphereobj, textu2.id);
+   // objadddraw(pyrobj, textu2.id);
     //adddraw(cubeobj.drawobject.vao, cubeobj.objectmesh.tisize, textu.id);
     typingtexts.push_back(&bruh);
     vec3 lightpos(0,30,0);
+
+    ui gol;
+    gol.pos = vec2(0, 0);
+    gol.size = vec2(0.5, 0.25);
+    gol.color = vec3(1, 0, 0);
+    gol.create();
+    uidrawobj(gol);
+
     while (!glfwWindowShouldClose(window))
     {
         lightpos.z = 0;
-        lightpos.y = (cos(t) - sin(t))*30;
-        lightpos.x = (sin(t) + cos(t))*30;
+        lightpos.y = (cos(t) - sin(t))*48;
+        lightpos.x = (sin(t) + cos(t))*48;
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         NewFrame();
@@ -850,9 +883,9 @@ int main()
         renderinc = 0;
         //addrender(buffarray2, renderinc, obj.vao, obj.vbo, booboo.tvsize, renders, booboo.verts, booboo.tverts);
        // addrender(buffarray2, renderinc, cubeobj.drawobject.vao, cubeobj.drawobject.vbo,cubeobj.objectmesh.tvsize, renders, cubeobj.objectmesh.verts, cubeobj.objectmesh.tverts);
-        objaddrender(buffarray2,renderinc,renders,cubeobj);
-        objaddrender(buffarray2, renderinc, renders, sphereobj);
-        objaddrender(buffarray2, renderinc, renders, pyrobj);
+       // objaddrender(buffarray2,renderinc,renders,cubeobj);
+       // objaddrender(buffarray2, renderinc, renders, sphereobj);
+       // objaddrender(buffarray2, renderinc, renders, pyrobj);
         ifs(window);
         matt3 rot;
         
@@ -903,11 +936,15 @@ int main()
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
         glUseProgram(uiShader.program);
+        glBindVertexArray(gol.drawobject.vao);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glBindVertexArray(0);
+        glUseProgram(textShader.program);
     
     
  
       //  
-       drawtext(bruh, uiShader);
+       drawtext(bruh, textShader);
 
 
         glUseProgram(frameShader.program);
