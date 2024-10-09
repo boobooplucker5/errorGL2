@@ -651,6 +651,47 @@ void cameramanage()
     viewmat = glm::lookAt(campos, campos + camfront, camup);
     transmat = glm::translate(glm::mat4(1.0f), campos);
 }
+void confirmfont(FT_Face& face, text& bruh)
+{
+    for (unsigned char i = 0; i < 128; i++)
+    {
+        if (FT_Load_Char(face, i, FT_LOAD_RENDER))
+        {
+            std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
+            continue;
+        }
+
+        unsigned int txt;
+        glGenTextures(1, &txt);
+
+        glBindTexture(GL_TEXTURE_2D, txt);
+        glTexImage2D(
+            GL_TEXTURE_2D,
+            0,
+            GL_RED,
+            face->glyph->bitmap.width,
+            face->glyph->bitmap.rows,
+            0,
+            GL_RED,
+            GL_UNSIGNED_BYTE,
+            face->glyph->bitmap.buffer
+        );
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        character chter;
+        chter.glyphid = txt;
+        chter.size = vec2(face->glyph->bitmap.width, face->glyph->bitmap.rows);
+        chter.bearing = vec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
+        chter.advance = face->glyph->advance.x;
+        bruh.characters[i] = chter;
+    }
+}
+void drawui()
+{
+
+}
 using namespace ImGui;
 int main()
 {
@@ -698,40 +739,7 @@ int main()
 
     glfwSetMouseButtonCallback(window, ifclicked);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    for (unsigned char i = 0; i < 128; i++)
-    {
-        if (FT_Load_Char(face, i, FT_LOAD_RENDER))
-        {
-            std::cout << "ERROR::FREETYTPE: Failed to load Glyph" << std::endl;
-            continue;
-        }
-
-        unsigned int txt;
-        glGenTextures(1, &txt);
-
-        glBindTexture(GL_TEXTURE_2D, txt);
-        glTexImage2D(
-            GL_TEXTURE_2D,
-            0,
-            GL_RED,
-            face->glyph->bitmap.width,
-            face->glyph->bitmap.rows,
-            0,
-            GL_RED,
-            GL_UNSIGNED_BYTE,
-            face->glyph->bitmap.buffer
-        );
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        character chter;
-        chter.glyphid = txt;
-        chter.size = vec2(face->glyph->bitmap.width, face->glyph->bitmap.rows);
-        chter.bearing = vec2(face->glyph->bitmap_left, face->glyph->bitmap_top);
-        chter.advance = face->glyph->advance.x;
-        bruh.characters[i] = chter;
-    }
+    confirmfont(face, bruh);
 
     FT_Done_Face(face);
     FT_Done_FreeType(ft);
@@ -860,14 +868,16 @@ int main()
 
     while (!glfwWindowShouldClose(window))
     {
-        lightpos.z = 0;
-        lightpos.y = (cos(t) - sin(t))*48;
-        lightpos.x = (sin(t) + cos(t))*48;
+        gol.updverts();
+        gol.update();
+      
+
+    
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         NewFrame();
-
-        
+   
+     
         t += 0.001;
 
         for (int i = 0; i < keyholds.size(); i++)
@@ -935,10 +945,7 @@ int main()
         glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
-        glUseProgram(uiShader.program);
-        glBindVertexArray(gol.drawobject.vao);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        glBindVertexArray(0);
+
         glUseProgram(textShader.program);
     
     

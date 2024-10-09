@@ -19,7 +19,8 @@ public:
 	unsigned int* indices;
 	void create();
 	void mousein(float mx, float my);
-
+	void update();
+	void updverts();
 	
 };
 
